@@ -4,78 +4,88 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour
 {
     [Header("Ekwipunek")]
-    // Lista komponentów, które gracz niesie w tablecie
     public List<GlitchComponentType> playerInventory = new List<GlitchComponentType>();
 
     [Header("Ustawienia")]
-    public float interactionDistance = 3f;
+    public float interactionDistance = 5f;
     public LayerMask interactableLayer;
     public Camera playerCamera;
     
-    [Header("UI Reference")]
+    [Header("Referencje")]
+    public TabletManager tabletManager;
     public FPPController fppController;
-    public TabletManager tabletManager; // Referencja do skryptu UI
+    public Tablet tabletMovement;
+    public Transform cursorCanvas;
+    public Transform interactionTooltip;
 
-    private bool isTabletOpen = false;
+    private bool isCursorMode = false; // Czy jesteśmy w trybie klikania?
+
+    void Start()
+    {
+        // Inicjalizujemy stałą listę gracza
+        tabletManager.InitializePlayerInventory(this);
+    }
 
     void Update()
     {
-        // Wyjście z tabletu
-        if (isTabletOpen && (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E)))
-        {
-            CloseTablet();
-            return;
-        }
+        // 1. Ciągły Raycast - aktualizuje UI zależnie od tego na co patrzysz
+        HandleRaycast();
 
-        // Interakcja tylko gdy tablet zamknięty
-        if (!isTabletOpen && Input.GetKeyDown(KeyCode.E))
+        // 2. Przełączanie trybu (Kamera vs Kursor)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            TryInteract();
+            ToggleTablet();
         }
     }
 
-    void TryInteract()
+    void HandleRaycast()
     {
+        // Jeśli jesteśmy w trybie kursora (klikamy), nie aktualizujemy celu,
+        // żeby lista nie zniknęła jak lekko przesuniemy myszkę na bok przycisku.
+        if (isCursorMode) return;
+
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
+        // Używamy QueryTriggerInteraction.Collide, żeby widzieć też obiekty bez fizyki (duchy)
         if (Physics.Raycast(ray, out hit, interactionDistance, interactableLayer, QueryTriggerInteraction.Collide))
         {
             GlitchedObject target = hit.collider.GetComponent<GlitchedObject>();
-            if (target != null)
-            {
-                OpenTablet(target);
-            }
+            // Wysyłamy cel do tabletu (może być null, jeśli trafiliśmy w coś innego na tej warstwie)
+            tabletManager.UpdateTargetView(target);
+            interactionTooltip.gameObject.SetActive(true);
+        }
+        else
+        {
+            // Patrzymy w niebo/podłogę -> czyścimy listę celu
+            tabletManager.UpdateTargetView(null);
+            interactionTooltip.gameObject.SetActive(false);
         }
     }
 
-    void OpenTablet(GlitchedObject target)
+    void ToggleTablet()
     {
-        isTabletOpen = true;
-        
-        // Odblokuj kursor myszy
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        isCursorMode = !isCursorMode;
 
-        // Zatrzymaj kamerę (jeśli masz skrypt FirstPersonController, wyłącz go tutaj)
-        // np. GetComponent<FirstPersonController>().enabled = false;
-        if (fppController != null) fppController.enabled = false; // <--- TO ZATRZYMA KAMERĘ
-        
-        tabletManager.OpenTabletInterface(target, this);
-    }
-
-    public void CloseTablet()
-    {
-        isTabletOpen = false;
-
-        // Zablokuj kursor z powrotem do gry FPP
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        // Włącz kamerę z powrotem
-        // np. GetComponent<FirstPersonController>().enabled = true;
-        if (fppController != null) fppController.enabled = true; // <--- TO WŁĄCZY KAMERĘ
-        
-        tabletManager.CloseTabletInterface();
+        if (isCursorMode)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            if (fppController != null) fppController.enabled = false;
+            
+            tabletMovement.SetState(true);
+            cursorCanvas.gameObject.SetActive(false);
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            if (fppController != null) fppController.enabled = true;
+            
+            tabletMovement.SetState(false);
+            cursorCanvas.gameObject.SetActive(true);
+            
+            HandleRaycast(); 
+        }
     }
 }
