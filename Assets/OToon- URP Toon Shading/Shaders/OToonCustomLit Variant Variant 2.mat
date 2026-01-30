@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2471576307752468004
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 10
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: OToonCustomLit Variant Variant 2
+  m_Shader: {fileID: -6465566751694194690, guid: 2c3c6a46626419c4f8bbdeab2ec2afbd, type: 3}
+  m_Parent: {fileID: 2100000, guid: 2aaaeace9e0126340bf5a8b5b4bca653, type: 2}
+  m_ModifiedSerializedProperties: 2
+  m_ValidKeywords:
+  - _HAFTONESHAPES_DOT
+  m_InvalidKeywords:
+  - _EMISSION
+  m_LightmapFlags: 6
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _RampTexture:
+        m_Texture: {fileID: 2800000, guid: d5674c2ac82db1a4ab4cbb251d627e21, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - Boolean_f9999c8db29c427d86a843c1a1c85720: 1
+    - _HalfToneEnabled: 0
+    - _HatchingEnabled: 0
+    - _QueueControl: 0
+    - _SPECULARHIGHLIGHTS: 0
+    - _SpecColor_1: 0.096
+    - _SpecFalloff: 0
+    - _SpecShadowStrenth: 1
+    - _StepViaRampTexture: 1
+    - _USERAMPCOLOR: 1
+    m_Colors:
+    - _BaseColor: {r: 0.3773585, g: 0.17197824, b: 0, a: 1}
+    - _SpecColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
