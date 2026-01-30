@@ -5,6 +5,7 @@ using TMPro;
 public class TabletRowUI : MonoBehaviour
 {
     public TextMeshProUGUI componentNameText;
+    public TextMeshProUGUI quantityText; // <--- NOWE POLE (Dodaj mały tekst w rogu przycisku)
     public Button actionButton;
     public TextMeshProUGUI buttonText;
 
@@ -12,11 +13,11 @@ public class TabletRowUI : MonoBehaviour
     private GlitchedObject currentTarget;
     private PlayerController player;
     
-    // Zmienna przechowująca funkcję odświeżania z Managera
     private System.Action onActionCompleted; 
-    private bool isTakingMode; // true = zabieramy od obiektu, false = dajemy obiektowi
+    private bool isTakingMode;
 
-    public void Setup(GlitchComponentType type, GlitchedObject target, PlayerController playerRef, bool takingMode, System.Action refreshCallback)
+    // Dodajemy parametr 'int quantity'
+    public void Setup(GlitchComponentType type, int quantity, GlitchedObject target, PlayerController playerRef, bool takingMode, System.Action refreshCallback)
     {
         myType = type;
         currentTarget = target;
@@ -26,36 +27,70 @@ public class TabletRowUI : MonoBehaviour
 
         componentNameText.text = type.ToString();
 
-        // Konfiguracja wyglądu w zależności od trybu
-        if (isTakingMode)
+        // Obsługa wyświetlania ilości
+        if (quantity > 1)
         {
-            buttonText.text = "ZABIERZ";
-            actionButton.image.color = new Color(1f, 0.5f, 0.5f); // Czerwonawy
+            quantityText.text = "x" + quantity.ToString();
+            quantityText.gameObject.SetActive(true);
         }
         else
         {
-            buttonText.text = "WSTAW";
-            actionButton.image.color = new Color(0.5f, 1f, 0.5f); // Zielonkawy
+            quantityText.text = "";
+            quantityText.gameObject.SetActive(false); // Ukrywamy, jak jest tylko 1 sztuka
+        }
+
+        if (isTakingMode)
+        {
+            buttonText.text = "REMOVE";
+            actionButton.image.color = new Color(1f, 0.5f, 0.5f);
+            actionButton.interactable = true;
+        }
+        else
+        {
+            buttonText.text = "ADD";
+            actionButton.image.color = new Color(0.5f, 1f, 0.5f);
+
+            // WAŻNE: Jeżeli obiekt już ma ten komponent, nie możemy dodać drugiego takiego samego
+            // Blokujemy przycisk, żeby nie tracić komponentów bez sensu
+            if (target != null && target.HasComponent(myType))
+            {
+                actionButton.interactable = false;
+                buttonText.text = "ADDED";
+                actionButton.image.color = Color.gray;
+            }
+            else
+            {
+                actionButton.interactable = true;
+            }
         }
     }
 
-    // Podpięte pod przycisk w Unity
     public void OnButtonClicked()
     {
+        if (currentTarget == null && !isTakingMode) 
+        {
+            Debug.LogWarning("Nie ma obiektu docelowego!");
+            return;
+        }
+
         if (isTakingMode)
         {
-            // Zabieramy od obiektu -> do gracza
+            // Zabieramy od obiektu -> Dodajemy do listy gracza (kolejna sztuka)
             currentTarget.RemoveComponent(myType);
             player.playerInventory.Add(myType);
         }
         else
         {
-            // Dajemy od gracza -> do obiektu
-            player.playerInventory.Remove(myType);
-            currentTarget.AddComponent(myType);
+            // Dajemy obiektowi
+            if (!currentTarget.HasComponent(myType))
+            {
+                // Remove usuwa TYLKO PIERWSZE wystąpienie z listy. 
+                // Jeśli masz Gravity, Gravity - usunie jedno, drugie zostanie.
+                player.playerInventory.Remove(myType);
+                currentTarget.AddComponent(myType);
+            }
         }
 
-        // Ważne: Mówimy Managerowi "Coś się zmieniło, przerysuj listy!"
         onActionCompleted?.Invoke();
     }
 }

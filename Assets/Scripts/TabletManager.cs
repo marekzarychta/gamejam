@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 using System.Collections.Generic;
 
 public class TabletManager : MonoBehaviour
@@ -7,64 +6,104 @@ public class TabletManager : MonoBehaviour
     public GameObject tabletPanel;
     public GameObject rowPrefab;
 
-    [Header("Listy UI")]
-    public Transform objectComponentsContainer; // Kontener na komponenty obiektu
-    public Transform playerInventoryContainer;  // Kontener na ekwipunek gracza
+    [Header("Kontenery UI")]
+    public Transform objectComponentsContainer;
+    public Transform playerInventoryContainer;
+    public GameObject noTargetMessage;
+    public GameObject noComponentsMessage;
 
-    // Zapamiętujemy referencje, żeby móc odświeżyć widok
-    private GlitchedObject currentTarget;
+    private GlitchedObject currentDisplayedTarget;
     private PlayerController currentPlayer;
 
     private void Start()
     {
-        tabletPanel.SetActive(false);
-    }
-
-    public void OpenTabletInterface(GlitchedObject target, PlayerController player)
-    {
-        currentTarget = target;
-        currentPlayer = player;
         tabletPanel.SetActive(true);
-
-        RefreshLists();
+        if(noTargetMessage != null) noTargetMessage.SetActive(true);
     }
 
-    public void CloseTabletInterface()
+    public void InitializePlayerInventory(PlayerController player)
     {
-        tabletPanel.SetActive(false);
+        currentPlayer = player;
+        RefreshPlayerList();
     }
 
-    // Ta funkcja buduje obie listy od zera
-    void RefreshLists()
+    public void UpdateTargetView(GlitchedObject target)
     {
+        if (currentDisplayedTarget == target) return;
+
+        currentDisplayedTarget = target;
         ClearContainer(objectComponentsContainer);
-        ClearContainer(playerInventoryContainer);
 
-        // 1. LISTA OBIEKTU (Co obiekt ma teraz?)
-        foreach (var comp in currentTarget.activeComponents)
+        if (target != null)
         {
-            CreateRow(comp, objectComponentsContainer, true);
-        }
+            if(noTargetMessage != null) noTargetMessage.SetActive(false);
 
-        // 2. LISTA GRACZA (Co gracz może dodać?)
-        // Wyświetlamy tylko te komponenty, które gracz ma w plecaku,
-        // ALE pomijamy te, które obiekt już posiada (nie można mieć 2x Gravity)
-        foreach (var comp in currentPlayer.playerInventory)
-        {
-            if (!currentTarget.HasComponent(comp))
+            foreach (var comp in target.activeComponents)
             {
-                CreateRow(comp, playerInventoryContainer, false);
+                // Komponenty obiektu zawsze mają ilość 1, bo to HashSet
+                CreateRow(comp, 1, objectComponentsContainer, true);
             }
         }
+        else
+        {
+            if(noTargetMessage != null) noTargetMessage.SetActive(true);
+        }
+        
+        // Musimy też odświeżyć listę gracza, bo zmieniają się stany przycisków (Active/Installed)
+        RefreshPlayerList(); 
     }
 
-    void CreateRow(GlitchComponentType type, Transform container, bool isTaking)
+    public void OnInventoryChanged()
+    {
+        RefreshPlayerList();
+        
+        // Wymuszamy odświeżenie celu
+        GlitchedObject tempTarget = currentDisplayedTarget;
+        currentDisplayedTarget = null;
+        UpdateTargetView(tempTarget);
+    }
+
+    void RefreshPlayerList()
+    {
+        ClearContainer(playerInventoryContainer);
+
+        if (currentPlayer == null) return;
+
+        // --- ALGORYTM GRUPOWANIA ---
+        // 1. Zliczamy ile mamy sztuk każdego typu
+        Dictionary<GlitchComponentType, int> inventoryCounts = new Dictionary<GlitchComponentType, int>();
+
+        foreach (var item in currentPlayer.playerInventory)
+        {
+            if (inventoryCounts.ContainsKey(item))
+                inventoryCounts[item]++;
+            else
+                inventoryCounts.Add(item, 1);
+        }
+
+        // 2. Tworzymy wiersze na podstawie zgrupowanych wyników
+        foreach (var kvp in inventoryCounts)
+        {
+            GlitchComponentType type = kvp.Key;
+            int count = kvp.Value;
+
+            CreateRow(type, count, playerInventoryContainer, false);
+        }
+        // ---------------------------
+        
+        if (currentPlayer.playerInventory.Count == 0) 
+            if(noComponentsMessage != null) noComponentsMessage.SetActive(true);
+        else 
+            if(noComponentsMessage != null) noComponentsMessage.SetActive(false);
+    }
+
+    // Zaktualizowana funkcja CreateRow przyjmująca 'count'
+    void CreateRow(GlitchComponentType type, int count, Transform container, bool isTaking)
     {
         GameObject newRow = Instantiate(rowPrefab, container);
         TabletRowUI rowScript = newRow.GetComponent<TabletRowUI>();
         
-        // Przekazujemy RefreshLists jako "callback"
-        rowScript.Setup(type, currentTarget, currentPlayer, isTaking, RefreshLists);
+        rowScript.Setup(type, count, currentDisplayedTarget, currentPlayer, isTaking, OnInventoryChanged);
     }
 
     void ClearContainer(Transform container)
