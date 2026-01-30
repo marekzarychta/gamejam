@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public Camera playerCamera;
     
     [Header("UI Reference")]
+    public FPPController fppController;
     public TabletManager tabletManager; // Referencja do skryptu UI
 
     private bool isTabletOpen = false;
@@ -58,7 +59,8 @@ public class PlayerController : MonoBehaviour
 
         // Zatrzymaj kamerę (jeśli masz skrypt FirstPersonController, wyłącz go tutaj)
         // np. GetComponent<FirstPersonController>().enabled = false;
-
+        if (fppController != null) fppController.enabled = false; // <--- TO ZATRZYMA KAMERĘ
+        
         tabletManager.OpenTabletInterface(target, this);
     }
 
@@ -72,7 +74,8 @@ public class PlayerController : MonoBehaviour
 
         // Włącz kamerę z powrotem
         // np. GetComponent<FirstPersonController>().enabled = true;
-
+        if (fppController != null) fppController.enabled = true; // <--- TO WŁĄCZY KAMERĘ
+        
         tabletManager.CloseTabletInterface();
     }
 }

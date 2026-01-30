@@ -1,80 +1,61 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Użyj TextMeshPro dla lepszej jakości tekstu
+using TMPro;
 
 public class TabletRowUI : MonoBehaviour
 {
     public TextMeshProUGUI componentNameText;
-    public Button actionButton; // Jeden przycisk, który zmienia funkcję (Weź / Daj)
+    public Button actionButton;
     public TextMeshProUGUI buttonText;
 
     private GlitchComponentType myType;
     private GlitchedObject currentTarget;
     private PlayerController player;
+    
+    // Zmienna przechowująca funkcję odświeżania z Managera
+    private System.Action onActionCompleted; 
+    private bool isTakingMode; // true = zabieramy od obiektu, false = dajemy obiektowi
 
-    // Funkcja konfigurująca wygląd wiersza
-    public void Setup(GlitchComponentType type, GlitchedObject target, PlayerController playerRef)
+    public void Setup(GlitchComponentType type, GlitchedObject target, PlayerController playerRef, bool takingMode, System.Action refreshCallback)
     {
         myType = type;
         currentTarget = target;
         player = playerRef;
+        isTakingMode = takingMode;
+        onActionCompleted = refreshCallback;
 
         componentNameText.text = type.ToString();
 
-        UpdateButtonState();
-        
-        // Resetowanie listenerów przycisku
-        //actionButton.onClick.RemoveAllListeners();
-        //actionButton.onClick.AddListener(OnButtonClicked);
-    }
-
-    void UpdateButtonState()
-    {
-        bool objectHasIt = currentTarget.HasComponent(myType);
-        bool playerHasIt = player.playerInventory.Contains(myType);
-
-        if (objectHasIt)
+        // Konfiguracja wyglądu w zależności od trybu
+        if (isTakingMode)
         {
-            // Obiekt to ma -> Możemy zabrać
-            actionButton.interactable = true;
             buttonText.text = "ZABIERZ";
-            actionButton.image.color = Color.red; // Opcjonalnie: kolor
-        }
-        else if (playerHasIt)
-        {
-            // Obiekt nie ma, ale gracz ma -> Możemy dać
-            actionButton.interactable = true;
-            buttonText.text = "WSTAW";
-            actionButton.image.color = Color.green;
+            actionButton.image.color = new Color(1f, 0.5f, 0.5f); // Czerwonawy
         }
         else
         {
-            // Nikt nie ma -> Nieaktywne
-            actionButton.interactable = false;
-            buttonText.text = "BRAK";
-            actionButton.image.color = Color.gray;
+            buttonText.text = "WSTAW";
+            actionButton.image.color = new Color(0.5f, 1f, 0.5f); // Zielonkawy
         }
     }
 
+    // Podpięte pod przycisk w Unity
     public void OnButtonClicked()
     {
-        Debug.Log("Kliknięto przycisk! Typ: " + myType); // <--- To nam powie, czy Unity w ogóle widzi kliknięcie
-
-        bool objectHasIt = currentTarget.HasComponent(myType);
-
-        if (objectHasIt)
+        if (isTakingMode)
         {
-            Debug.Log("Zabieram komponent...");
+            // Zabieramy od obiektu -> do gracza
             currentTarget.RemoveComponent(myType);
             player.playerInventory.Add(myType);
         }
         else
         {
-            Debug.Log("Wstawiam komponent...");
+            // Dajemy od gracza -> do obiektu
             player.playerInventory.Remove(myType);
             currentTarget.AddComponent(myType);
         }
 
-        UpdateButtonState();
+        // Ważne: Mówimy Managerowi "Coś się zmieniło, przerysuj listy!"
+        onActionCompleted?.Invoke();
     }
 }
