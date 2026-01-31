@@ -20,6 +20,8 @@ public class FPPController : MonoBehaviour
 
 	private CharacterController controller;
 	private Vector3 velocity;
+	private Vector3 externalVelocity; //knockback 
+	public float externalDamping = 8f;
 	private float verticalLookRotation = 0f;
 
 	// Zmienna stanu tabletu
@@ -68,7 +70,20 @@ public class FPPController : MonoBehaviour
 		// Gravity
 		velocity.y += gravity * Time.deltaTime;
 		controller.Move(velocity * Time.deltaTime);
-	}
+
+        //knockback
+        if (externalVelocity.sqrMagnitude > 0.0001f)
+        {
+            controller.Move(externalVelocity * Time.deltaTime);
+            externalVelocity = Vector3.Lerp(externalVelocity, Vector3.zero, externalDamping * Time.deltaTime);
+        }
+    }
+
+	public void AddKnockback(Vector3 impulse)
+	{
+		impulse.y = 0f;
+		externalVelocity += impulse;
+    }
 
 	void HandleMouseLook()
 	{
