@@ -49,7 +49,7 @@ public class FPPController : MonoBehaviour
 
 		if (groundedPlayer && velocity.y < 0)
 		{
-			velocity.y = 0f;
+			velocity.y = -2f;
 		}
 
 		// Input

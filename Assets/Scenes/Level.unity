@@ -153,6 +153,7 @@ Transform:
   m_Children:
   - {fileID: 1741510084}
   - {fileID: 2138955109}
+  - {fileID: 1877842218}
   m_Father: {fileID: 229615154}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &99475182
@@ -603,6 +604,7 @@ GameObject:
   m_Component:
   - component: {fileID: 229615154}
   - component: {fileID: 229615153}
+  - component: {fileID: 229615156}
   - component: {fileID: 229615152}
   - component: {fileID: 229615155}
   m_Layer: 8
@@ -655,7 +657,7 @@ CharacterController:
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &229615154
 Transform:
@@ -697,6 +699,30 @@ MonoBehaviour:
   tabletMovement: {fileID: 1741510085}
   cursorCanvas: {fileID: 2138955109}
   interactionTooltip: {fileID: 429529786}
+--- !u!114 &229615156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 229615151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b850dc519e84f5c855edeba6787a614, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DragController
+  grabDistance: 4
+  dragSpeed: 10
+  rotationSpeed: 2
+  dragLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  heavyMassThreshold: 10
+  heavyDragDamping: 5
+  heavyWalkSpeedMultiplier: 0.3
+  playerCamera: {fileID: 99475184}
+  holdParent: {fileID: 1877842218}
+  fppController: {fileID: 229615152}
 --- !u!1 &289242813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1284,7 +1310,7 @@ GameObject:
   - component: {fileID: 602019732}
   m_Layer: 8
   m_Name: pBody
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1636,11 +1662,11 @@ GameObject:
   - component: {fileID: 948149960}
   - component: {fileID: 948149959}
   - component: {fileID: 948149958}
-  - component: {fileID: 948149957}
   - component: {fileID: 948149956}
   - component: {fileID: 948149963}
   - component: {fileID: 948149962}
   - component: {fileID: 948149961}
+  - component: {fileID: 948149957}
   - component: {fileID: 948149964}
   m_Layer: 7
   m_Name: Cube2
@@ -1669,6 +1695,7 @@ MonoBehaviour:
   myRenderer: {fileID: 948149958}
   myPushable: {fileID: 948149962}
   myMovable: {fileID: 948149963}
+  nakedMaterial: {fileID: 0}
 --- !u!65 &948149957
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1785,7 +1812,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1815,10 +1842,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Movable
   horizontal: 0
-  velocity: 3
+  velocity: 0.5
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 247
+  passengerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  showDebugLogs: 1
+  manualPlayer: {fileID: 0}
   startPoint: {x: 0, y: 0, z: 0}
   endPointHorizontal: {x: -2.39, y: 0.54, z: 1.2}
-  endPointVertical: {x: 0, y: 6, z: 0}
+  endPointVertical: {x: 0, y: 1.78, z: 0}
 --- !u!65 &948149964
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1836,7 +1871,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 0.06, z: 1}
   m_Center: {x: 0, y: 0.53, z: 0}
@@ -2153,6 +2188,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tablet
       objectReference: {fileID: 0}
+    - target: {fileID: 5377789688188149837, guid: 8f59c8aa88ac60941a512d3e8c3dbddb, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7878815171597364765, guid: 8f59c8aa88ac60941a512d3e8c3dbddb, type: 3}
       propertyPath: hiddenScale.x
       value: 50
@@ -2394,6 +2433,7 @@ MonoBehaviour:
   myRenderer: {fileID: 1228595206}
   myPushable: {fileID: 0}
   myMovable: {fileID: 0}
+  nakedMaterial: {fileID: 0}
 --- !u!1 &1698248239
 GameObject:
   m_ObjectHideFlags: 0
@@ -2672,6 +2712,7 @@ MonoBehaviour:
   myRenderer: {fileID: 1795092005}
   myPushable: {fileID: 0}
   myMovable: {fileID: 1795092010}
+  nakedMaterial: {fileID: 0}
 --- !u!114 &1795092010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2686,6 +2727,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Movable
   horizontal: 1
   velocity: 2
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  passengerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  showDebugLogs: 1
+  manualPlayer: {fileID: 0}
   startPoint: {x: 0, y: 0, z: 0}
   endPointHorizontal: {x: 2.57, y: 5.9, z: -5.62}
   endPointVertical: {x: -4.7, y: 1.52, z: -1.04}
@@ -2766,6 +2815,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1877842217
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1877842218}
+  m_Layer: 8
+  m_Name: HoldTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1877842218
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877842217}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 99475181}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1913671164
 GameObject:
