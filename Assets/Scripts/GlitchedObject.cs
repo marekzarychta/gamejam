@@ -134,7 +134,7 @@ public class GlitchedObject : MonoBehaviour
 		if (myCollider != null)
 		{
 			bool hasCollider = activeComponents.Contains(GlitchComponentType.Collider);
-			gameObject.layer = LayerMask.NameToLayer(hasCollider ? "glitchedObject" : "ghostObject");
+			myCollider.gameObject.layer = LayerMask.NameToLayer(hasCollider ? "glitchedObject" : "ghostObject");
 		}
 
 		if (myRenderer != null)

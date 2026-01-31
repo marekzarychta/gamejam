@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, interactionDistance, interactableLayer, QueryTriggerInteraction.Collide))
         {
             newTarget = hit.collider.GetComponent<GlitchedObject>();
+            if (newTarget == null) newTarget = hit.collider.transform.parent.GetComponent<GlitchedObject>();
         }
 
         // 2. LOGIKA PODŚWIETLANIA (MATRIX EFFECT)

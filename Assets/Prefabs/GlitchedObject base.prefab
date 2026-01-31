@@ -18,9 +18,9 @@ GameObject:
   - component: {fileID: 9029811725937080193}
   - component: {fileID: 1857451303118478765}
   - component: {fileID: 1997867379987235177}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GlitchedObject base
-  m_TagString: Untagged
+  m_TagString: GlitchObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
