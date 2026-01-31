@@ -1638,6 +1638,8 @@ GameObject:
   - component: {fileID: 948149958}
   - component: {fileID: 948149957}
   - component: {fileID: 948149956}
+  - component: {fileID: 948149963}
+  - component: {fileID: 948149962}
   - component: {fileID: 948149961}
   m_Layer: 7
   m_Name: Cube2
@@ -1658,13 +1660,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a82739e1c570674fb7d62d49490042f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  startingComponents: 0100000002000000
+  startingComponents: 01000000020000000000000003000000
   finalState: 02000000
   isImportant: 1
   myCollider: {fileID: 948149957}
   myRigidbody: {fileID: 948149961}
   myRenderer: {fileID: 948149958}
-  activeComponents: 
+  myPushable: {fileID: 948149962}
+  myMovable: {fileID: 948149963}
 --- !u!65 &948149957
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1785,6 +1788,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &948149962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948149955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfa1c8d7511ab264bbc3e416f5ea463b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pushable
+  pushPower: 2
+--- !u!114 &948149963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948149955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf3ebe3eb92a3b145b2a24c7607a097c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Movable
+  horizontal: 0
+  velocity: 3
+  startPoint: {x: 0, y: 0, z: 0}
+  endPointHorizontal: {x: -2.39, y: 0.54, z: 1.2}
+  endPointVertical: {x: 0, y: 6, z: 0}
 --- !u!1 &979876106
 GameObject:
   m_ObjectHideFlags: 0
@@ -2444,6 +2477,7 @@ GameObject:
   - component: {fileID: 1795092006}
   - component: {fileID: 1795092005}
   - component: {fileID: 1795092004}
+  - component: {fileID: 1795092010}
   - component: {fileID: 1795092009}
   - component: {fileID: 1795092008}
   m_Layer: 6
@@ -2585,13 +2619,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a82739e1c570674fb7d62d49490042f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlitchedObject
-  startingComponents: 0200000000000000
+  startingComponents: 020000000000000004000000
   finalState: 02000000
   isImportant: 1
   myCollider: {fileID: 1795092004}
   myRigidbody: {fileID: 1795092008}
   myRenderer: {fileID: 1795092005}
-  activeComponents: 
+  myPushable: {fileID: 0}
+  myMovable: {fileID: 1795092010}
+--- !u!114 &1795092010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795092003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf3ebe3eb92a3b145b2a24c7607a097c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Movable
+  horizontal: 1
+  velocity: 2
+  startPoint: {x: 0, y: 0, z: 0}
+  endPointHorizontal: {x: 2.57, y: 5.9, z: -5.62}
+  endPointVertical: {x: -4.7, y: 1.52, z: -1.04}
 --- !u!1 &1840997091
 GameObject:
   m_ObjectHideFlags: 0
