@@ -14,7 +14,6 @@ public class Movable : MonoBehaviour
 
     private Vector3 currentTarget;
 	private Rigidbody rb;
-	private bool initialized = false;
 
 	void Awake()
     {
@@ -51,14 +50,17 @@ public class Movable : MonoBehaviour
 		Vector3 direction = (currentTarget - rb.position).normalized;
 		float distanceThisFrame = velocity * Time.fixedDeltaTime;
 
-		if(rb.SweepTest(direction, out RaycastHit hit, distanceThisFrame + 0.1f, QueryTriggerInteraction.Ignore))
+		RaycastHit[] hits = rb.SweepTestAll(direction, distanceThisFrame + 0.1f, QueryTriggerInteraction.Ignore);
+
+		foreach (var hit in hits)
 		{
-            if (!hit.transform.CompareTag("Player"))
-            {
-				ToggleTarget();
-				return;
-            }
-        }
+			if (hit.transform.IsChildOf(transform)) continue;
+
+			if (hit.transform == transform) continue;
+
+			ToggleTarget();
+			return;
+		}
 
 		Vector3 newPosition = Vector3.MoveTowards(rb.position, currentTarget, distanceThisFrame);
 		rb.MovePosition(newPosition);
@@ -86,13 +88,31 @@ public class Movable : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Player"))
+		{
 			other.transform.parent = transform;
+		}
+		else if (other.attachedRigidbody != null && !other.attachedRigidbody.isKinematic)
+		{
+			if (other.transform.position.y > transform.position.y)
+			{
+				other.transform.parent = transform;
+			}
+		}
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
 		if (other.CompareTag("Player"))
+		{
 			other.transform.parent = null;
+		}
+		else if (other.attachedRigidbody != null && !other.attachedRigidbody.isKinematic)
+		{
+			if (other.transform.parent == transform)
+			{
+				other.transform.parent = null; 
+			}
+		}
 	}
 
 	private void OnDrawGizmosSelected()
