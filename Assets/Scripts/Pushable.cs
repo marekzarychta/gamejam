@@ -8,29 +8,30 @@ public class Pushable : MonoBehaviour
 
 	private Rigidbody rb;
 
-	void Start()
+	void Awake()
 	{
 		rb = GetComponent<Rigidbody>();
-
-		if (rb != null)
-		{
-			rb.linearDamping = 5f;
-			rb.angularDamping = 5f;
-
-			// Blokujemy wywracanie siê (tylko przesuwanie, bez turlania)
-			rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-		}
 	}
 
 	public void Push(Vector3 desiredVelocity, Transform pusher)
 	{
+		if (rb.isKinematic) return;
+
 		if (desiredVelocity.magnitude < 0.1f) return;
 
 		Vector3 direction = desiredVelocity.normalized;
-
 		float checkDistance = desiredVelocity.magnitude * Time.deltaTime + 0.1f;
 
-		RaycastHit[] hits = rb.SweepTestAll(direction, checkDistance, QueryTriggerInteraction.Ignore);
+		if (!IsPathBlocked(direction, checkDistance, pusher))
+		{
+			rb.linearVelocity = desiredVelocity;
+		}
+
+	}
+
+	private bool IsPathBlocked(Vector3 direction, float distance, Transform pusher)
+	{
+		RaycastHit[] hits = rb.SweepTestAll(direction, distance, QueryTriggerInteraction.Ignore);
 
 		foreach (var hit in hits)
 		{
@@ -38,24 +39,9 @@ public class Pushable : MonoBehaviour
 
 			if (hit.transform == pusher) continue;
 
-			Rigidbody hitRb = hit.collider.attachedRigidbody;
-
-			if (hitRb == null)
-			{
-				return;
-			}
-
-			if (hitRb != null)
-			{
-				Pushable otherPushable = hitRb.GetComponent<Pushable>();
-
-				if (otherPushable == null)
-				{
-					return;
-				}
-			}
+			return true;
 		}
-
-		rb.linearVelocity = desiredVelocity;
+		return false;
 	}
+
 }
