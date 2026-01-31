@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -11,7 +12,8 @@ public enum GlitchComponentType
 	Rotatable,
 	Enlarge,
 	Shrink,
-	MaterialSkin
+	MaterialSkin,
+	Shooting
 }
 
 public class GlitchedObject : MonoBehaviour
@@ -23,6 +25,12 @@ public class GlitchedObject : MonoBehaviour
 	[Header("Is important")]
 	public bool isImportant;
 
+	[Header("Audio Glitch")] // --- NOWA SEKCJA ---
+	public AudioClip glitchLoopSound;
+	[Range(0f, 1f)] public float glitchVolume = 0.5f;
+	public float soundDistance = 10f; // Jak daleko słychać dźwięk
+	public Vector2 pitchRange = new Vector2(0.8f, 1.2f); // Losowość (min, max)
+	
 	[Header("Referencje")]
 	public Collider myCollider;
 	public Rigidbody myRigidbody;
@@ -33,6 +41,7 @@ public class GlitchedObject : MonoBehaviour
 	public Enlarge myEnlarge;
 	public Shrink myShrink;
 	public Material nakedMaterial;
+	public TurretShooter myTurretShooter;
 
 	public HashSet<GlitchComponentType> activeComponents = new HashSet<GlitchComponentType>();
 
@@ -45,6 +54,9 @@ public class GlitchedObject : MonoBehaviour
 	private bool _isHoveredByPlayer = false;
 	private Outline myOutline;
 
+	private AudioSource _glitchAudioSource;
+	private Coroutine _glitchCoroutine;
+	
 	void Awake()
 	{
 		if (nakedMaterial == null)
@@ -71,13 +83,26 @@ public class GlitchedObject : MonoBehaviour
 			}
 		}
 
+		if (glitchLoopSound != null)
+		{
+			_glitchAudioSource = gameObject.AddComponent<AudioSource>();
+			_glitchAudioSource.clip = glitchLoopSound;
+			_glitchAudioSource.spatialBlend = 1.0f; // 1.0 = Pełne 3D (słychać kierunek i odległość)
+			_glitchAudioSource.minDistance = 1f;
+			_glitchAudioSource.maxDistance = soundDistance;
+			_glitchAudioSource.rolloffMode = AudioRolloffMode.Linear; // Liniowe wyciszanie wraz z dystansem
+			_glitchAudioSource.volume = glitchVolume;
+			_glitchAudioSource.playOnAwake = false;
+			_glitchAudioSource.loop = false; // Sami obsługujemy pętlę, żeby zmieniać pitch
+		}
+		
 		myOutline = GetComponent<Outline>();
 		if (myOutline == null)
 		{
 			myOutline = gameObject.AddComponent<Outline>();
 		}
 		
-		myOutline.OutlineMode = Outline.Mode.OutlineAll;
+		myOutline.OutlineMode = Outline.Mode.OutlineVisible;
 		myOutline.OutlineColor = Color.green;
 		myOutline.OutlineWidth = 5f;
         
@@ -162,9 +187,11 @@ public class GlitchedObject : MonoBehaviour
 		bool isMovable = activeComponents.Contains(GlitchComponentType.Movable);
 		bool isPushable = activeComponents.Contains(GlitchComponentType.Pushable);
 		bool hasGravity = activeComponents.Contains(GlitchComponentType.Gravity);
+		bool isShooting = activeComponents.Contains(GlitchComponentType.Shooting);
 
-		if (myMovable != null) myMovable.enabled = isMovable;
+        if (myMovable != null) myMovable.enabled = isMovable;
 		if (myPushable != null) myPushable.enabled = isPushable;
+		if (myTurretShooter != null) myTurretShooter.enabled = isShooting;
 
 		if (myRotatable != null) myRotatable.enabled = activeComponents.Contains(GlitchComponentType.Rotatable);
 
@@ -236,19 +263,60 @@ public class GlitchedObject : MonoBehaviour
     // Wewnętrzna logika decydująca o świeceniu
     private void UpdateHighlightState()
     {
-        if (myRenderer == null) return;
+	    // Sprawdzamy warunek: Ważny i Nienaprawiony
+	    bool isGlitching = isImportant && checkFixedState() < 0.99f;
 
-        bool shouldGlow = _isHoveredByPlayer;
+	    // 1. OBSŁUGA VISUAL (MATRIX)
+	    if (myRenderer != null)
+	    {
+		    myRenderer.GetPropertyBlock(_propBlock);
+		    _propBlock.SetInt(hoverPropertyID, isGlitching ? 1 : 0);
+		    myRenderer.SetPropertyBlock(_propBlock);
+	    }
 
-        // Jeśli obiekt jest ważny i NIE jest w pełni naprawiony (< 99%), to świeci zawsze
-        if (isImportant && checkFixedState() < 0.99f)
-        {
-            shouldGlow = true;
-        }
+	    // 2. OBSŁUGA AUDIO (LOOPER)
+	    if (_glitchAudioSource != null)
+	    {
+		    if (isGlitching)
+		    {
+			    // Jeśli powinno grać, a nie gra -> startujemy korutynę
+			    if (_glitchCoroutine == null)
+			    {
+				    _glitchCoroutine = StartCoroutine(GlitchSoundLoop());
+			    }
+		    }
+		    else
+		    {
+			    // Jeśli nie powinno grać -> zatrzymujemy
+			    if (_glitchCoroutine != null)
+			    {
+				    StopCoroutine(_glitchCoroutine);
+				    _glitchCoroutine = null;
+				    _glitchAudioSource.Stop();
+			    }
+		    }
+	    }
+    }
 
-        myRenderer.GetPropertyBlock(_propBlock);
-        _propBlock.SetInt(hoverPropertyID, shouldGlow ? 1 : 0);
-        myRenderer.SetPropertyBlock(_propBlock);
+    // --- KORUTYNA DO ZMIANY PITCHA ---
+    IEnumerator GlitchSoundLoop()
+    {
+	    while (true)
+	    {
+		    // 1. Losujemy pitch
+		    float randomPitch = Random.Range(pitchRange.x, pitchRange.y);
+		    _glitchAudioSource.pitch = randomPitch;
+            
+		    // 2. Gramy dźwięk
+		    _glitchAudioSource.Play();
+
+		    // 3. Czekamy aż się skończy (długość klipu / prędkość odtwarzania)
+		    // Dzięki temu nie ma przerw ani nakładania się
+		    float waitTime = glitchLoopSound.length / Mathf.Abs(randomPitch);
+            
+		    // Odejmujemy odrobinę (np. 0.05s), żeby pętla była bardziej "seamless" (bez przerw)
+		    yield return new WaitForSeconds(waitTime - 0.05f);
+	    }
     }
 
 	// returns top material from the stack without popping

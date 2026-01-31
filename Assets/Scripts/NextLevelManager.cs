@@ -16,6 +16,10 @@ public class NextLevelManager : MonoBehaviour
     public Button continueButton;
     public TMP_Text nextLevelText;
 
+    [Header("Audio")]
+    public AudioClip victorySound;
+    public AudioClip failureSound;
+    
     private bool shown = false;
 
     // Progi zaliczenia (0.5 = 50%)
@@ -25,7 +29,8 @@ public class NextLevelManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && shown)
         {
-            ContinueLevel();
+            shown = false;
+            victoryCanvas.gameObject.SetActive(false);
         }
     }
     
@@ -57,6 +62,15 @@ public class NextLevelManager : MonoBehaviour
         // Konwertujemy na ładny format procentowy (np. 85%)
         float displayPercent = percent * 100f;
 
+        if (percent >= PASS_THRESHOLD)
+        {
+            AudioManager.Instance.PlayUISFX(victorySound);
+        }
+        else
+        {
+            AudioManager.Instance.PlayUISFX(failureSound);
+        }
+        
         // 1. USTAWIANIE VICTORY TEXT (Tytuł)
         if (Mathf.Approximately(percent, 1f)) // 100%
         {

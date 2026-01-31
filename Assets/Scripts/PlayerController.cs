@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour
     public Transform cursorCanvas;
     public Transform interactionTooltip;
 
+    [Header("Audio")]
+    public AudioClip tabletOpenSound;
+    public AudioClip tabletCloseSound;
+    
     private bool isCursorMode = false;
     [HideInInspector] public bool endScreenMode = false;
     private GlitchedObject currentHoveredObject;
@@ -36,6 +40,9 @@ public class PlayerController : MonoBehaviour
         {
             ToggleTablet();
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+            Debug.Log($"SPACE | isCursorMode={isCursorMode} | fppEnabled={(fppController ? fppController.enabled : false)}");
+
     }
 
     void HandleRaycast()
@@ -107,6 +114,8 @@ public class PlayerController : MonoBehaviour
             
             tabletMovement.SetState(true);
             cursorCanvas.gameObject.SetActive(false);
+            
+            AudioManager.Instance.PlayUISFX(tabletOpenSound, 0.2f);
         }
         else
         {
@@ -116,6 +125,8 @@ public class PlayerController : MonoBehaviour
             
             tabletMovement.SetState(false);
             cursorCanvas.gameObject.SetActive(true);
+            
+            AudioManager.Instance.PlayUISFX(tabletCloseSound, 0.2f);
             
             HandleRaycast(); 
         }
