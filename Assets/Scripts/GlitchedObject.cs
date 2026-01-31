@@ -6,7 +6,8 @@ public enum GlitchComponentType
 {
 	Collider,
 	Gravity,
-	Visibility
+	Visibility,
+	Pushable
 }
 
 public class GlitchedObject : MonoBehaviour
@@ -22,6 +23,7 @@ public class GlitchedObject : MonoBehaviour
 	public Collider myCollider;
 	public Rigidbody myRigidbody;
 	public Renderer myRenderer;
+	public Pushable myPushable;
 
 	public List<GlitchComponentType> activeComponents = new List<GlitchComponentType>();
 
@@ -67,6 +69,8 @@ public class GlitchedObject : MonoBehaviour
 
 		if (myRenderer != null)
 			myRenderer.enabled = activeComponents.Contains(GlitchComponentType.Visibility);
+		if (myPushable != null)
+			myPushable.enabled = activeComponents.Contains (GlitchComponentType.Pushable);
 	}
 
 	public bool checkFixedState()

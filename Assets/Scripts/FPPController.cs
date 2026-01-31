@@ -93,4 +93,22 @@ public class FPPController : MonoBehaviour
 			}
 		}
 	}
+
+	private void OnControllerColliderHit(ControllerColliderHit hit)
+	{
+		Rigidbody body = hit.collider.attachedRigidbody;
+		if (body == null || body.isKinematic) return;
+
+		Pushable pushableObject = hit.gameObject.GetComponent<Pushable>();
+		if (pushableObject == null) return;
+
+		if (hit.moveDirection.y < -0.3f) return;
+
+		Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+
+		Vector3 targetVelocity = pushDir * pushableObject.pushPower;
+
+		pushableObject.Push(targetVelocity, transform);
+	}
+
 }
