@@ -8,6 +8,7 @@ public enum GlitchComponentType
 	Visibility,
 	Pushable,
 	Movable,
+	Rotatable,
 	Enlarge,
 	Shrink,
 	MaterialSkin
@@ -28,6 +29,7 @@ public class GlitchedObject : MonoBehaviour
 	public Renderer myRenderer;
 	public Pushable myPushable;
 	public Movable myMovable;
+	public Rotatable myRotatable;
 	public Enlarge myEnlarge;
 	public Shrink myShrink;
 	public Material nakedMaterial;
@@ -149,6 +151,8 @@ public class GlitchedObject : MonoBehaviour
 
 		if (myMovable != null) myMovable.enabled = isMovable;
 		if (myPushable != null) myPushable.enabled = isPushable;
+
+		if (myRotatable != null) myRotatable.enabled = activeComponents.Contains(GlitchComponentType.Rotatable);
 
 		if (myEnlarge != null) myEnlarge.enabled = activeComponents.Contains(GlitchComponentType.Enlarge);
 		if (myShrink != null) myShrink.enabled = activeComponents.Contains(GlitchComponentType.Shrink);
