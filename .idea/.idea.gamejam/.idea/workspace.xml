@@ -5,19 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="283aaaa7-0ebf-4973-b391-cd28c53787c1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/DragController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/DragController.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/GlitchedObjectMaterial 4.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/GlitchedObjectMaterial 4.mat.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Models/Cupcake 1.fbx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Models/Cupcake 1.fbx.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Models/Cupcake.fbx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Models/Cupcake.fbx.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Models/Cupcake_DefaultMaterial_BaseColor.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Models/Cupcake_DefaultMaterial_BaseColor.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Models/Cupcake_DefaultMaterial_Roughness.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Models/Cupcake_DefaultMaterial_Roughness.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/GlitchedObject base.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/GlitchedObject base.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/NextLevelManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/NextLevelManager.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.gamejam/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.gamejam/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/GlitchedObjectMaterial.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/GlitchedObjectMaterial.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Materials/MatrixShader.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/MatrixShader.shadergraph" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/OToon- URP Toon Shading/Demo(Can be delete)/Plugins/UnityChanSSU/Materials/UCSSU_Headphone.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/OToon- URP Toon Shading/Demo(Can be delete)/Plugins/UnityChanSSU/Materials/UCSSU_Headphone.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/component.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/component.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/FPPController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/FPPController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GlitchedObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GlitchedObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pushable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pushable.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MainMenuManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MainMenuManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/TabletManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TabletManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/TabletRowUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TabletRowUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Textures/noTexture.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/noTexture.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +45,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DragController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/FPPController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GlitchedObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/NextLevelManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/TabletManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/TabletRowUI.cs" root0="FORCE_HIGHLIGHTING" />

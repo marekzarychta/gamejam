@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
         if (currentHoveredObject != newTarget)
         {
             // A. Wyłączamy efekt na starym obiekcie (jeśli istniał)
-            if (currentHoveredObject != null)
+            /*if (currentHoveredObject != null)
             {
                 currentHoveredObject.SetHighlight(false);
             }
@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
             if (newTarget != null)
             {
                 newTarget.SetHighlight(true);
-            }
+            }*/
 
             // C. Zapamiętujemy nowy cel jako aktualny
             currentHoveredObject = newTarget;

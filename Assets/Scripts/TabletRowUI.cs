@@ -16,7 +16,7 @@ public class TabletRowUI : MonoBehaviour
     private System.Action onActionCompleted; 
     private bool isTakingMode;
 
-    public void Setup(GlitchComponentType type, int quantity, GlitchedObject target, PlayerController playerRef, bool takingMode, System.Action refreshCallback)
+    public void Setup(GlitchComponentType type, int quantity, GlitchedObject target, PlayerController playerRef, bool takingMode, bool isMissing, System.Action refreshCallback)
     {
         myType = type;
         currentTarget = target;
@@ -24,6 +24,17 @@ public class TabletRowUI : MonoBehaviour
         isTakingMode = takingMode;
         onActionCompleted = refreshCallback;
 
+        if (isMissing)
+        {
+	        componentNameText.text = type.ToString() + " <color=red>(MISSING)</color>";
+	        quantityText.gameObject.SetActive(false);
+            
+	        buttonText.text = "";
+	        actionButton.interactable = false; // Nie można "zabrać" braku
+	        actionButton.image.color = Color.gray;
+	        return; // Kończymy konfigurację tutaj dla brakujących
+        }
+        
         componentNameText.text = type.ToString();
 
         if (quantity > 1)
@@ -79,7 +90,8 @@ public class TabletRowUI : MonoBehaviour
 		if (myType == GlitchComponentType.MaterialSkin)
 		{
 			HandleMaterialTransfer();
-		} else
+		} 
+		else
 		{
 			HandleStandardTransfer();
 		}

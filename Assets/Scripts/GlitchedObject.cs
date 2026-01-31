@@ -36,24 +36,18 @@ public class GlitchedObject : MonoBehaviour
 
 	private Stack<Material> materialHistory = new Stack<Material>();
 	
-	private Material myMaterial;
 	private MaterialPropertyBlock _propBlock;
     private int hoverPropertyID;
+	
+	// NOWE: Zapamiętujemy czy gracz patrzy na obiekt
+	private bool _isHoveredByPlayer = false;
 
-	void Start()
+	void Awake()
 	{
 		if (nakedMaterial == null)
 		{
 			Debug.LogWarning("BRAK PRZYPISANEGO NAKED MATERIAL W OBIEKCIE: " + gameObject.name);
 		}
-		
-		/*
-		if (nakedMaterial == null)
-		{
-			nakedMaterial = new Material(Shader.Find("Standard"));
-			nakedMaterial.color = new Color(1f, 0f, 1f); // W�ciek�y R� (Magenta)
-			nakedMaterial.name = "ERROR_NO_TEXTURE";
-		}*/
 
 		foreach (var comp in startingComponents)
 		{
@@ -63,7 +57,6 @@ public class GlitchedObject : MonoBehaviour
 		_propBlock = new MaterialPropertyBlock();
 		if (myRenderer != null)
         {
-            //myMaterial = myRenderer.material; 
             hoverPropertyID = Shader.PropertyToID("_IsHovered");
         }
 
@@ -76,6 +69,7 @@ public class GlitchedObject : MonoBehaviour
 		}
 
 		UpdatePhysicalState();
+		UpdateHighlightState(); // Inicjalizacja podświetlenia
 	}
 
 	public void AddComponent(GlitchComponentType type)
@@ -83,13 +77,6 @@ public class GlitchedObject : MonoBehaviour
 		bool isNew = !activeComponents.Contains(type);
 		if (activeComponents.Add(type))
 		{
-			/*if (type == GlitchComponentType.MaterialSkin && isNew)
-			{
-				if (myRenderer != null && materialHistory.Count == 0)
-				{
-					materialHistory.Push(myRenderer.material);
-				}
-			}*/
 			UpdatePhysicalState();
 		}
 	}
@@ -144,7 +131,6 @@ public class GlitchedObject : MonoBehaviour
 
 	void UpdatePhysicalState()
 	{
-		// COLLIDER
 		if (myCollider != null)
 		{
 			bool hasCollider = activeComponents.Contains(GlitchComponentType.Collider);
@@ -169,30 +155,25 @@ public class GlitchedObject : MonoBehaviour
 
 		if (myRigidbody != null)
 		{
-			// MOVABLE (Winda/Platforma) - ma najwyższy priorytet
 			if (isMovable) 
 			{
-				myRigidbody.isKinematic = true; // MUSI być true, żeby skrypt Movable nim sterował
+				myRigidbody.isKinematic = true; 
 				myRigidbody.useGravity = false;
 				myRigidbody.constraints = RigidbodyConstraints.None;
-				myRigidbody.interpolation = RigidbodyInterpolation.None; // Kinematic move position tego nie potrzebuje aż tak
+				myRigidbody.interpolation = RigidbodyInterpolation.None; 
 			} 
-			// PUSHABLE (Fizyczna skrzynia)
 			else if (isPushable) 
 			{
-				myRigidbody.isKinematic = false; // Fizyka musi działać
-				myRigidbody.useGravity = hasGravity; // Grawitacja zależy od komponentu Gravity
+				myRigidbody.isKinematic = false; 
+				myRigidbody.useGravity = hasGravity; 
 				myRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 				
-				// Ustawiamy masę lub damping, żeby czuć ciężar
 				myRigidbody.linearDamping = 1f; 
 				myRigidbody.angularDamping = 0.5f;
-				myRigidbody.constraints = RigidbodyConstraints.None; // Pozwalamy się przewracać
+				myRigidbody.constraints = RigidbodyConstraints.None; 
 			}
-			// DEFAULT (Ani to, ani to - np. statyczna ściana albo lewitujący obiekt)
 			else 
 			{
-				// Jeśli ma grawitację, to spada, jeśli nie, to wisi w powietrzu (Kinematic)
 				if (hasGravity)
 				{
 					myRigidbody.isKinematic = false;
@@ -200,62 +181,54 @@ public class GlitchedObject : MonoBehaviour
 				}
 				else
 				{
-					myRigidbody.isKinematic = true; // Zastyga w powietrzu
+					myRigidbody.isKinematic = true; 
 					myRigidbody.useGravity = false;
 				}
 			}
-			
-			/*myRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
-
-			if (isMovable) {
-				myRigidbody.isKinematic = true;
-				myRigidbody.useGravity = false;
-				myRigidbody.constraints = RigidbodyConstraints.None;
-			} else {
-				if (myRigidbody.isKinematic)
-				{
-					myRigidbody.isKinematic = false;
-					myRigidbody.linearVelocity = Vector3.zero;
-					myRigidbody.angularVelocity = Vector3.zero;
-				}
-                else
-                {
-					myRigidbody.isKinematic = false;
-				}
-
-				myRigidbody.useGravity = hasGravity;
-
-				if (isPushable)
-				{
-					myRigidbody.linearDamping = 5f;
-					myRigidbody.angularDamping = 5f;
-					myRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-				} else
-				{
-					myRigidbody.linearDamping = 0.5f;
-					myRigidbody.constraints = RigidbodyConstraints.None;
-				}
-			}*/
 		}
+
+		// Po każdej zmianie fizycznej sprawdzamy, czy naprawiliśmy obiekt (żeby ewentualnie zgasić matrixa)
+		UpdateHighlightState();
 	}
 
-	public bool checkFixedState()
+	public float checkFixedState()
 	{
-		return activeComponents.SetEquals(finalState);
+		if (finalState.Count == 0) return 1f;
+
+		int matches = 0;
+		foreach (var requiredComponent in finalState)
+		{
+			if (activeComponents.Contains(requiredComponent))
+			{
+				matches++;
+			}
+		}
+
+		return (float)matches / finalState.Count;
 	}
     
+    // Zmodyfikowana funkcja, którą wywołuje PlayerController
     public void SetHighlight(bool active)
+    {
+        //_isHoveredByPlayer = active;
+        //UpdateHighlightState();
+    }
+
+    // Wewnętrzna logika decydująca o świeceniu
+    private void UpdateHighlightState()
     {
         if (myRenderer == null) return;
 
-        // 1. Pobierz aktualne właściwości z Renderera (żeby nie nadpisać innych zmian)
+        bool shouldGlow = _isHoveredByPlayer;
+
+        // Jeśli obiekt jest ważny i NIE jest w pełni naprawiony (< 99%), to świeci zawsze
+        if (isImportant && checkFixedState() < 0.99f)
+        {
+            shouldGlow = true;
+        }
+
         myRenderer.GetPropertyBlock(_propBlock);
-
-        // 2. Ustaw wartość w bloku (zamiast w materiale)
-        _propBlock.SetInt(hoverPropertyID, active ? 1 : 0);
-
-        // 3. Zaaplikuj blok z powrotem na Renderer
+        _propBlock.SetInt(hoverPropertyID, shouldGlow ? 1 : 0);
         myRenderer.SetPropertyBlock(_propBlock);
     }
-
 }

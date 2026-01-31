@@ -3,14 +3,22 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	public static GameManager Instance;
+	
 	private List<GlitchedObject> sceneObjects = new List<GlitchedObject>();
 
+	void Awake()
+	{
+		if (Instance == null) Instance = this;
+		else Destroy(gameObject);
+	}
+	
 	void Start()
 	{
 		GlitchedObject[] foundObjects = FindObjectsOfType<GlitchedObject>();
 		sceneObjects.AddRange(foundObjects);
 
-		Debug.Log($"Znaleziono {sceneObjects.Count} zglitchowanych obiekt�w.");
+		Debug.Log($"Znaleziono {sceneObjects.Count} zglitchowanych obiekt�w.");
 	}
 
 	void Update()
@@ -21,28 +29,49 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void ValidateGameEnd()
+	public float ValidateGameEnd()
 	{
-		bool allFixed = true;
+		float totalPercentage = 0f;
+		int importantCount = 0;
 
 		foreach (var obj in sceneObjects)
 		{
-			if (obj.isImportant) { 
-				if (!obj.checkFixedState())
-				{
-					allFixed = false;
-					Debug.Log($"Obiekt {obj.name} jest �le skonfigurowany.");
-					break;
-				}
+			// Interesują nas tylko obiekty oznaczone jako ważne dla ukończenia poziomu
+			if (obj.isImportant) 
+			{ 
+				float objProgress = obj.checkFixedState(); // Zwraca 0.0 - 1.0
+				totalPercentage += objProgress;
+				importantCount++;
+
+				// Opcjonalnie: Raportuj stan każdego obiektu
+				// Debug.Log($"Obiekt {obj.name}: {objProgress * 100:F0}%");
 			}
 		}
 
-		if (allFixed)
+		if (importantCount > 0)
 		{
-			Debug.Log("UDALO SIE! Wszystkie obiekty naprawione.");
-		} else
-		{
-			Debug.Log("Jeszcze nie koniec...");
+			// Obliczamy średnią arytmetyczną
+			float gameProgress = totalPercentage / importantCount;
+            
+			Debug.Log($"=== STATUS SYSTEMU: {gameProgress * 100:F1}% ===");
+
+			// Sprawdzamy czy gra jest ukończona (z małym marginesem błędu dla floatów)
+			if (gameProgress >= 0.99f)
+			{
+				Debug.Log("SYSTEM STABILNY. POZIOM UKOŃCZONY!");
+			} 
+			else
+			{
+				Debug.Log($"Wymagana dalsza naprawa. Brakuje {(1f - gameProgress) * 100:F1}%");
+			}
+
+			return gameProgress;
 		}
+		else
+		{
+			Debug.Log("Brak ważnych obiektów w scenie. Poziom automatycznie zaliczony?");
+		}
+
+		return 0f;
 	}
 }

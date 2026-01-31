@@ -49,7 +49,19 @@ public class TabletManager : MonoBehaviour
                     count = target.GetMaterialStackSize();
                 }
 
-                CreateRow(comp, count, objectComponentsContainer, true);
+                CreateRow(comp, count, objectComponentsContainer, true, false);
+            }
+            
+            if (target.isImportant)
+            {
+                foreach (var required in target.finalState)
+                {
+                    if (!target.activeComponents.Contains(required))
+                    {
+                        // isMissing = true
+                        CreateRow(required, 1, objectComponentsContainer, true, true);
+                    }
+                }
             }
         }
         else
@@ -95,7 +107,7 @@ public class TabletManager : MonoBehaviour
             GlitchComponentType type = kvp.Key;
             int count = kvp.Value;
 
-            CreateRow(type, count, playerInventoryContainer, false);
+            CreateRow(type, count, playerInventoryContainer, false, false);
         }
         // ---------------------------
         
@@ -106,12 +118,12 @@ public class TabletManager : MonoBehaviour
     }
 
     // Zaktualizowana funkcja CreateRow przyjmująca 'count'
-    void CreateRow(GlitchComponentType type, int count, Transform container, bool isTaking)
+    void CreateRow(GlitchComponentType type, int count, Transform container, bool isTaking, bool isMissing)
     {
         GameObject newRow = Instantiate(rowPrefab, container);
         TabletRowUI rowScript = newRow.GetComponent<TabletRowUI>();
         
-        rowScript.Setup(type, count, currentDisplayedTarget, currentPlayer, isTaking, OnInventoryChanged);
+        rowScript.Setup(type, count, currentDisplayedTarget, currentPlayer, isTaking, isMissing, OnInventoryChanged);
     }
 
     void ClearContainer(Transform container)
