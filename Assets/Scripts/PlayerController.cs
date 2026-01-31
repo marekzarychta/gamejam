@@ -34,6 +34,9 @@ public class PlayerController : MonoBehaviour
         {
             ToggleTablet();
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+            Debug.Log($"SPACE | isCursorMode={isCursorMode} | fppEnabled={(fppController ? fppController.enabled : false)}");
+
     }
 
     void HandleRaycast()

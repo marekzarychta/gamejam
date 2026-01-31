@@ -8,7 +8,8 @@ public enum GlitchComponentType
 	Visibility,
 	Pushable,
 	Movable,
-	MaterialSkin
+	MaterialSkin,
+	Shooting
 }
 
 public class GlitchedObject : MonoBehaviour
@@ -26,6 +27,7 @@ public class GlitchedObject : MonoBehaviour
 	public Renderer myRenderer;
 	public Pushable myPushable;
 	public Movable myMovable;
+	public TurretShooter myTurretShooter;
 
 	public HashSet<GlitchComponentType> activeComponents = new HashSet<GlitchComponentType>();
 
@@ -140,9 +142,11 @@ public class GlitchedObject : MonoBehaviour
 		bool isMovable = activeComponents.Contains(GlitchComponentType.Movable);
 		bool isPushable = activeComponents.Contains(GlitchComponentType.Pushable);
 		bool hasGravity = activeComponents.Contains(GlitchComponentType.Gravity);
+		bool isShooting = activeComponents.Contains(GlitchComponentType.Shooting);
 
-		if (myMovable != null) myMovable.enabled = isMovable;
+        if (myMovable != null) myMovable.enabled = isMovable;
 		if (myPushable != null) myPushable.enabled = isPushable;
+		if (myTurretShooter != null) myTurretShooter.enabled = isShooting;
 
 		if (myRigidbody != null)
 		{
