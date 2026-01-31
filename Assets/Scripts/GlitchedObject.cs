@@ -32,6 +32,9 @@ public class GlitchedObject : MonoBehaviour
 	private Stack<Material> materialHistory = new Stack<Material>();
 
 	private static Material nakedMaterial;
+	
+	private Material myMaterial;
+    private int hoverPropertyID;
 
 	void Start()
 	{
@@ -46,6 +49,14 @@ public class GlitchedObject : MonoBehaviour
 		{
 			activeComponents.Add(comp);
 		}
+
+		if (myRenderer != null)
+        {
+            // Pobieramy instancję materiału, żeby nie zmieniać wszystkich obiektów na raz
+            myMaterial = myRenderer.material; 
+            // Zamieniamy tekst "_IsHovered" na szybki ID
+            hoverPropertyID = Shader.PropertyToID("_IsHovered");
+        }
 
 		if (myRenderer != null)
 		{
@@ -184,4 +195,13 @@ public class GlitchedObject : MonoBehaviour
 	{
 		return activeComponents.SetEquals(finalState);
 	}
+    
+    public void SetHighlight(bool active)
+    {
+        if (myMaterial == null) return;
+
+        // W shaderze boolean to tak naprawdę integer (0 = false, 1 = true)
+        myMaterial.SetInt(hoverPropertyID, active ? 1 : 0);
+    }
+
 }

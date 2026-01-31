@@ -20,7 +20,8 @@ public class PlayerController : MonoBehaviour
     public Transform interactionTooltip;
 
     private bool isCursorMode = false;
-
+    private GlitchedObject currentHoveredObject;
+    
     void Start()
     {
         tabletManager.InitializePlayerInventory(this);
@@ -38,24 +39,51 @@ public class PlayerController : MonoBehaviour
 
     void HandleRaycast()
     {
+
         if (isCursorMode) return;
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
-        // Używamy QueryTriggerInteraction.Collide, żeby widzieć też obiekty bez fizyki (duchy)
+        // 1. Ustalamy, co jest NOWYM celem (może to być obiekt lub null)
+        GlitchedObject newTarget = null;
+
         if (Physics.Raycast(ray, out hit, interactionDistance, interactableLayer, QueryTriggerInteraction.Collide))
         {
-            GlitchedObject target = hit.collider.GetComponent<GlitchedObject>();
-            // Wysyłamy cel do tabletu (może być null, jeśli trafiliśmy w coś innego na tej warstwie)
-            tabletManager.UpdateTargetView(target);
-            interactionTooltip.gameObject.SetActive(true);
+            newTarget = hit.collider.GetComponent<GlitchedObject>();
+        }
+
+        // 2. LOGIKA PODŚWIETLANIA (MATRIX EFFECT)
+        // Sprawdzamy, czy cel się zmienił od ostatniej klatki
+        if (currentHoveredObject != newTarget)
+        {
+            // A. Wyłączamy efekt na starym obiekcie (jeśli istniał)
+            if (currentHoveredObject != null)
+            {
+                currentHoveredObject.SetHighlight(false);
+            }
+
+            // B. Włączamy efekt na nowym obiekcie (jeśli istnieje)
+            if (newTarget != null)
+            {
+                newTarget.SetHighlight(true);
+            }
+
+            // C. Zapamiętujemy nowy cel jako aktualny
+            currentHoveredObject = newTarget;
+            
+            // D. Przy okazji aktualizujemy widok tabletu (optymalizacja: tylko gdy cel się zmienia)
+            tabletManager.UpdateTargetView(newTarget);
+        }
+
+        // 3. Obsługa Tooltipa (np. ikonka "E interact")
+        if (newTarget != null)
+        {
+            if (interactionTooltip != null) interactionTooltip.gameObject.SetActive(true);
         }
         else
         {
-            // Patrzymy w niebo/podłogę -> czyścimy listę celu
-            tabletManager.UpdateTargetView(null);
-            interactionTooltip.gameObject.SetActive(false);
+            if (interactionTooltip != null) interactionTooltip.gameObject.SetActive(false);
         }
     }
 
