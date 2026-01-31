@@ -311,7 +311,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 2
   m_Viewport: {fileID: 6560550927505119747}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 841095128634860691}
@@ -631,7 +631,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 11, y: -17}
+  m_SizeDelta: {x: 11, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &3676094564721569082
 CanvasRenderer:
@@ -867,7 +867,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 989928472913896520}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1394,7 +1394,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 11, y: -17}
+  m_SizeDelta: {x: 11, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &2942533734937375460
 CanvasRenderer:
@@ -2166,7 +2166,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 2
   m_Viewport: {fileID: 2097571260269138524}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 8930900200378830035}
@@ -2414,12 +2414,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FPPController
   groundedPlayer: 1
   moveSpeed: 6
-  jumpHeight: 2
-  gravity: -9.81
+  jumpHeight: 1.5
+  gravity: -15
   cameraTransform: {fileID: 6839608559113765809}
   mouseSensitivity: 200
   maxLookAngle: 80
   tablet: {fileID: 0}
+  footstepSounds:
+  - {fileID: 8300000, guid: 947e31b32961e2e449f183ff1431050e, type: 3}
+  - {fileID: 8300000, guid: 4e361c8b50d025048a8c0465ef12205b, type: 3}
+  - {fileID: 8300000, guid: 607b6cc0b8c769f4f911f1a03dc8943e, type: 3}
+  jumpSound: {fileID: 8300000, guid: 5d3e40118666f1042becf58781a3e2c9, type: 3}
+  landSound: {fileID: 8300000, guid: b12de89703bd79643b9330887fa7a40c, type: 3}
+  footstepInterval: 0.5
+  velocityThreshold: 1
 --- !u!114 &54173040730604676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2443,6 +2451,8 @@ MonoBehaviour:
   tabletMovement: {fileID: 5721223493305812545}
   cursorCanvas: {fileID: 0}
   interactionTooltip: {fileID: 0}
+  tabletOpenSound: {fileID: 8300000, guid: 52cbceb20ba138a40bb0e91f35510b0e, type: 3}
+  tabletCloseSound: {fileID: 8300000, guid: 52cbceb20ba138a40bb0e91f35510b0e, type: 3}
   endScreenMode: 0
 --- !u!1001 &2464298937618016348
 PrefabInstance:
@@ -2664,7 +2674,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 207078198041805607, guid: acdfa435db2de2b41a21b023bd542686, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2481461822870210862, guid: acdfa435db2de2b41a21b023bd542686, type: 3}
       propertyPath: m_LocalPosition.z

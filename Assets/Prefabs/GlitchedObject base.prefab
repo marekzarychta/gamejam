@@ -112,11 +112,16 @@ MonoBehaviour:
   startingComponents: 0000000001000000030000000200000007000000
   finalState: 
   isImportant: 0
+  glitchLoopSound: {fileID: 8300000, guid: 46763279adea31d468948b50b364bf08, type: 3}
+  glitchVolume: 0.4
+  soundDistance: 10
+  pitchRange: {x: 0.8, y: 1.2}
   myCollider: {fileID: 4818067248749602868}
   myRigidbody: {fileID: 7289442660537363404}
   myRenderer: {fileID: 1668927418474144012}
   myPushable: {fileID: 3218725411579854940}
   myMovable: {fileID: 9029811725937080193}
+  myRotatable: {fileID: 0}
   myEnlarge: {fileID: 1857451303118478765}
   myShrink: {fileID: 1997867379987235177}
   nakedMaterial: {fileID: 2100000, guid: 8e074b7088aed5d4c9148f97443c06b1, type: 2}

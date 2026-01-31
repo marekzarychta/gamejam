@@ -50,6 +50,10 @@ MonoBehaviour:
   ratingText: {fileID: 0}
   nextLevelButton: {fileID: 0}
   restartButton: {fileID: 0}
+  continueButton: {fileID: 0}
+  nextLevelText: {fileID: 0}
+  victorySound: {fileID: 8300000, guid: 82968afc122fcda45bd7790330b11659, type: 3}
+  failureSound: {fileID: 8300000, guid: d283e1cf860ef284a8f14bc7aa47d3b1, type: 3}
 --- !u!65 &9210990732947842869
 BoxCollider:
   m_ObjectHideFlags: 0

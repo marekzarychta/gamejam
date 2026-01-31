@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class DragController : MonoBehaviour
 {
@@ -26,8 +27,10 @@ public class DragController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0))
         {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+            
             if (heldObject == null) TryGrabObject();
             else DropObject();
         }
@@ -42,7 +45,7 @@ public class DragController : MonoBehaviour
                 if (!Input.GetKey(KeyCode.R)) fppController.enabled = true;
             }
 
-            if (Input.GetMouseButtonUp(1)) DropObject();
+            if (Input.GetMouseButtonUp(0)) DropObject();
 
             if (Input.GetKey(KeyCode.R))
             {

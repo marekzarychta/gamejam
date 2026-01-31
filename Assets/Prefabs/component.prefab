@@ -444,6 +444,9 @@ MonoBehaviour:
   buttonText: {fileID: 960459285479499083}
   image: {fileID: 5487096303689035805}
   materialPreviewIcon: {fileID: 1724814917220854212}
+  addComponentSound: {fileID: 8300000, guid: cbf9661df49d7d64988f9a66d04aa869, type: 3}
+  removeComponentSound: {fileID: 8300000, guid: cc3259c2e4fb41f4788e9374ab036ef7, type: 3}
+  errorSound: {fileID: 8300000, guid: cbf9661df49d7d64988f9a66d04aa869, type: 3}
 --- !u!1 &6619766650507082637
 GameObject:
   m_ObjectHideFlags: 0
