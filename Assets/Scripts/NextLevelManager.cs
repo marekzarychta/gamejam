@@ -11,14 +11,24 @@ public class NextLevelManager : MonoBehaviour
     public TMP_Text ratingText;
     
     [Header("Buttons")]
-    public GameObject nextLevelButton;
-    public GameObject restartButton;
+    public Button nextLevelButton;
+    public Button restartButton;
+    public Button continueButton;
+    public TMP_Text nextLevelText;
 
     private bool shown = false;
 
     // Progi zaliczenia (0.5 = 50%)
     private const float PASS_THRESHOLD = 0.5f;
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && shown)
+        {
+            ContinueLevel();
+        }
+    }
+    
     public void OnTriggerEnter(Collider other)
     {
         if (shown) return;
@@ -31,7 +41,9 @@ public class NextLevelManager : MonoBehaviour
             // Odblokuj kursor, żeby można było klikać w UI
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            
+
+            var player = other.GetComponent<PlayerController>();
+            if (player != null) player.ToggleTablet(true);
             // Opcjonalnie: Zatrzymaj gracza/czas
             // Time.timeScale = 0f; 
         }
@@ -74,18 +86,16 @@ public class NextLevelManager : MonoBehaviour
         // Format: "95% (Overwhelmingly Positive)"
         ratingText.text = $"{displayPercent:F0}% ({steamDesc})";
         ratingText.color = ratingColor;
-
-        // 3. OBSŁUGA PRZYCISKÓW
-        // Jeśli wynik < 50%, chowamy przycisk "Next Level", zmuszając do restartu
+        
         if (percent < PASS_THRESHOLD)
         {
-            if(nextLevelButton != null) nextLevelButton.SetActive(false);
-            if(restartButton != null) restartButton.SetActive(true);
+            if (nextLevelButton != null) nextLevelButton.interactable = false;
+            nextLevelText.alpha = 0.4f;
         }
         else
         {
-            if(nextLevelButton != null) nextLevelButton.SetActive(true);
-            if(restartButton != null) restartButton.SetActive(true); // Restart zawsze dostępny dla ambitnych
+            if (nextLevelButton != null) nextLevelButton.interactable = true;
+            nextLevelText.alpha = 1f;
         }
     }
 
@@ -125,5 +135,17 @@ public class NextLevelManager : MonoBehaviour
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ContinueLevel()
+    {
+        var player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        if (player != null)
+        {
+            shown = false;
+            player.endScreenMode = false;
+            player.ToggleTablet(false);
+            victoryCanvas.gameObject.SetActive(false);
+        }
     }
 }
