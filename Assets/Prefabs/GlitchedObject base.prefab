@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 9029811725937080193}
   - component: {fileID: 1857451303118478765}
   - component: {fileID: 1997867379987235177}
+  - component: {fileID: 6728622312200696627}
   m_Layer: 6
   m_Name: GlitchedObject base
   m_TagString: GlitchObject
@@ -117,6 +118,7 @@ MonoBehaviour:
   myRenderer: {fileID: 1668927418474144012}
   myPushable: {fileID: 3218725411579854940}
   myMovable: {fileID: 9029811725937080193}
+  myRotatable: {fileID: 6728622312200696627}
   myEnlarge: {fileID: 1857451303118478765}
   myShrink: {fileID: 1997867379987235177}
   nakedMaterial: {fileID: 2100000, guid: 8e074b7088aed5d4c9148f97443c06b1, type: 2}
@@ -232,3 +234,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shrink
   scaleFactor: 0.5
+--- !u!114 &6728622312200696627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546145279255141691}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a883aabf47469bd40b3019788a8ff4e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Rotatable
+  rotateFactor: 2.5

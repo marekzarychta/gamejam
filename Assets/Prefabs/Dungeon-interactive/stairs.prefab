@@ -131,11 +131,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3525341163138566538, guid: d1c6b4073b44c654cbcd35f9c6f3e62f, type: 3}
       propertyPath: 'finalState.Array.data[2]'
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3525341163138566538, guid: d1c6b4073b44c654cbcd35f9c6f3e62f, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3525341163138566538, guid: d1c6b4073b44c654cbcd35f9c6f3e62f, type: 3}
       propertyPath: 'startingComponents.Array.data[0]'
@@ -143,11 +143,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3525341163138566538, guid: d1c6b4073b44c654cbcd35f9c6f3e62f, type: 3}
       propertyPath: 'startingComponents.Array.data[1]'
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3525341163138566538, guid: d1c6b4073b44c654cbcd35f9c6f3e62f, type: 3}
       propertyPath: 'startingComponents.Array.data[2]'
-      value: 0
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3525341163138566538, guid: d1c6b4073b44c654cbcd35f9c6f3e62f, type: 3}
       propertyPath: 'startingComponents.Array.data[3]'
