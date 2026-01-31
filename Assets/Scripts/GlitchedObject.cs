@@ -85,19 +85,31 @@ public class GlitchedObject : MonoBehaviour
 				myRigidbody.isKinematic = true;
 				myRigidbody.useGravity = false;
 				myRigidbody.constraints = RigidbodyConstraints.None;
-			} else if (isPushable) {
-				myRigidbody.isKinematic = false;
-				myRigidbody.useGravity = hasGravity;
-				myRigidbody.linearDamping = 5f;
-				myRigidbody.angularDamping = 5f;
-				myRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
 			} else {
-				myRigidbody.isKinematic = false;
+				if (myRigidbody.isKinematic)
+				{
+					myRigidbody.isKinematic = false;
+					myRigidbody.linearVelocity = Vector3.zero;
+					myRigidbody.angularVelocity = Vector3.zero;
+				}
+                else
+                {
+					myRigidbody.isKinematic = false;
+				}
+
 				myRigidbody.useGravity = hasGravity;
-				myRigidbody.linearDamping = 0.5f;
-				myRigidbody.angularDamping = 0.05f;
-				myRigidbody.constraints = RigidbodyConstraints.None;
-			}	
+
+				if (isPushable)
+				{
+					myRigidbody.linearDamping = 5f;
+					myRigidbody.angularDamping = 5f;
+					myRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+				} else
+				{
+					myRigidbody.linearDamping = 0.5f;
+					myRigidbody.constraints = RigidbodyConstraints.None;
+				}
+			}
 		}
 	}
 

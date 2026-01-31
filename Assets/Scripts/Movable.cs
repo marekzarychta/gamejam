@@ -7,21 +7,36 @@ public class Movable : MonoBehaviour
     public bool horizontal;
 
     [Header("Params")]
-    public float velocity;
+    public float velocity = 2f;
     public Vector3 startPoint;
     public Vector3 endPointHorizontal;
     public Vector3 endPointVertical;
 
     private Vector3 currentTarget;
 	private Rigidbody rb;
+	private bool initialized = false;
 
 	void Awake()
     {
 		rb = GetComponent<Rigidbody>();
 
-		if (startPoint == Vector3.zero) startPoint = transform.position;
-        SetNextTarget();
-    }
+		if (startPoint == Vector3.zero && endPointHorizontal == Vector3.zero && endPointVertical == Vector3.zero)
+		{
+			startPoint = transform.position;
+		} 
+		else if (startPoint == Vector3.zero)
+		{
+			startPoint = transform.position;
+		}
+	}
+
+	void OnEnable()
+	{
+		Vector3 endPoint = horizontal ? endPointHorizontal : endPointVertical;
+		float distanceToStart = Vector3.Distance(transform.position, startPoint);
+		float distanceToEnd = Vector3.Distance(transform.position, endPoint);
+		currentTarget = (distanceToStart < distanceToEnd) ? endPoint : startPoint;
+	}
 
 	// Fixed update bo fizyka
 	void FixedUpdate()
@@ -33,7 +48,19 @@ public class Movable : MonoBehaviour
     void MovePlatform()
     {
 
-		Vector3 newPosition = Vector3.MoveTowards(rb.position, currentTarget, velocity * Time.fixedDeltaTime);
+		Vector3 direction = (currentTarget - rb.position).normalized;
+		float distanceThisFrame = velocity * Time.fixedDeltaTime;
+
+		if(rb.SweepTest(direction, out RaycastHit hit, distanceThisFrame + 0.1f, QueryTriggerInteraction.Ignore))
+		{
+            if (!hit.transform.CompareTag("Player"))
+            {
+				ToggleTarget();
+				return;
+            }
+        }
+
+		Vector3 newPosition = Vector3.MoveTowards(rb.position, currentTarget, distanceThisFrame);
 		rb.MovePosition(newPosition);
 
 		if (Vector3.Distance(transform.position, currentTarget) < 0.01f)
@@ -42,15 +69,18 @@ public class Movable : MonoBehaviour
 		}
 	}
 
-    void SetNextTarget()
-    {
-		currentTarget = horizontal ? endPointHorizontal : endPointVertical;
-	}
-
     void ToggleTarget()
     {
 		Vector3 endPoint = horizontal ? endPointHorizontal : endPointVertical;
-		currentTarget = (currentTarget == startPoint) ? endPoint : startPoint;
+		float distanceToStart = Vector3.Distance(currentTarget, startPoint);
+		float distanceToEnd = Vector3.Distance(currentTarget, endPoint);
+
+		if (distanceToStart < distanceToEnd)
+		{
+			currentTarget = endPoint;
+		} else { 
+			currentTarget = startPoint;
+		}
 	}
 
 	private void OnTriggerEnter(Collider other)
