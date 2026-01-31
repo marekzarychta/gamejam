@@ -77,7 +77,7 @@ public class GlitchedObject : MonoBehaviour
 			myOutline = gameObject.AddComponent<Outline>();
 		}
 		
-		myOutline.OutlineMode = Outline.Mode.OutlineAll;
+		myOutline.OutlineMode = Outline.Mode.OutlineVisible;
 		myOutline.OutlineColor = Color.green;
 		myOutline.OutlineWidth = 5f;
         

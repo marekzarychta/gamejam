@@ -25,7 +25,8 @@ public class NextLevelManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && shown)
         {
-            ContinueLevel();
+            shown = false;
+            victoryCanvas.gameObject.SetActive(false);
         }
     }
     

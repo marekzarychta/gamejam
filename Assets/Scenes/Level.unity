@@ -1490,6 +1490,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5033178819561343590, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5044252267727434153, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1552,6 +1556,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8264898468515165083, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8314383406250579578, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9036420749295817242, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
