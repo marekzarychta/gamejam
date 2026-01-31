@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public Transform interactionTooltip;
 
     private bool isCursorMode = false;
+    [HideInInspector] public bool endScreenMode = false;
     private GlitchedObject currentHoveredObject;
     
     void Start()
@@ -52,23 +53,25 @@ public class PlayerController : MonoBehaviour
         {
             newTarget = hit.collider.GetComponent<GlitchedObject>();
             if (newTarget == null) newTarget = hit.collider.transform.parent.GetComponent<GlitchedObject>();
+
         }
+
 
         // 2. LOGIKA PODŚWIETLANIA (MATRIX EFFECT)
         // Sprawdzamy, czy cel się zmienił od ostatniej klatki
         if (currentHoveredObject != newTarget)
         {
-            // A. Wyłączamy efekt na starym obiekcie (jeśli istniał)
-            /*if (currentHoveredObject != null)
+            // 1. Wyłącz outline na starym obiekcie
+            if (currentHoveredObject != null)
             {
-                currentHoveredObject.SetHighlight(false);
+                currentHoveredObject.SetHoverOutline(false);
             }
 
-            // B. Włączamy efekt na nowym obiekcie (jeśli istnieje)
+            // 2. Włącz outline na nowym obiekcie
             if (newTarget != null)
             {
-                newTarget.SetHighlight(true);
-            }*/
+                newTarget.SetHoverOutline(true);
+            }
 
             // C. Zapamiętujemy nowy cel jako aktualny
             currentHoveredObject = newTarget;
@@ -88,10 +91,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void ToggleTablet()
+    public void ToggleTablet(bool endScreen = false)
     {
-        isCursorMode = !isCursorMode;
+        //endScreenMode = endScreen;
+        
+        //if (endScreenMode) return;
 
+        isCursorMode = !isCursorMode;
+        
         if (isCursorMode)
         {
             Cursor.lockState = CursorLockMode.None;
@@ -113,4 +120,14 @@ public class PlayerController : MonoBehaviour
             HandleRaycast(); 
         }
     }
+
+	public Material GetCurrentHeldMaterial()
+	{
+		if (collectedMaterials.Count > 0)
+		{
+			return collectedMaterials.Peek();
+		}
+		return null;
+	}
+
 }

@@ -8,6 +8,7 @@ public enum GlitchComponentType
 	Visibility,
 	Pushable,
 	Movable,
+	Rotatable,
 	Enlarge,
 	Shrink,
 	MaterialSkin
@@ -28,6 +29,7 @@ public class GlitchedObject : MonoBehaviour
 	public Renderer myRenderer;
 	public Pushable myPushable;
 	public Movable myMovable;
+	public Rotatable myRotatable;
 	public Enlarge myEnlarge;
 	public Shrink myShrink;
 	public Material nakedMaterial;
@@ -41,6 +43,7 @@ public class GlitchedObject : MonoBehaviour
 	
 	// NOWE: Zapamiętujemy czy gracz patrzy na obiekt
 	private bool _isHoveredByPlayer = false;
+	private Outline myOutline;
 
 	void Awake()
 	{
@@ -68,6 +71,19 @@ public class GlitchedObject : MonoBehaviour
 			}
 		}
 
+		myOutline = GetComponent<Outline>();
+		if (myOutline == null)
+		{
+			myOutline = gameObject.AddComponent<Outline>();
+		}
+		
+		myOutline.OutlineMode = Outline.Mode.OutlineAll;
+		myOutline.OutlineColor = Color.green;
+		myOutline.OutlineWidth = 5f;
+        
+		// Na start wyłączamy obrys
+		myOutline.enabled = false;
+		
 		UpdatePhysicalState();
 		UpdateHighlightState(); // Inicjalizacja podświetlenia
 	}
@@ -150,6 +166,8 @@ public class GlitchedObject : MonoBehaviour
 		if (myMovable != null) myMovable.enabled = isMovable;
 		if (myPushable != null) myPushable.enabled = isPushable;
 
+		if (myRotatable != null) myRotatable.enabled = activeComponents.Contains(GlitchComponentType.Rotatable);
+
 		if (myEnlarge != null) myEnlarge.enabled = activeComponents.Contains(GlitchComponentType.Enlarge);
 		if (myShrink != null) myShrink.enabled = activeComponents.Contains(GlitchComponentType.Shrink);
 
@@ -207,12 +225,13 @@ public class GlitchedObject : MonoBehaviour
 		return (float)matches / finalState.Count;
 	}
     
-    // Zmodyfikowana funkcja, którą wywołuje PlayerController
-    public void SetHighlight(bool active)
-    {
-        //_isHoveredByPlayer = active;
-        //UpdateHighlightState();
-    }
+	public void SetHoverOutline(bool show)
+	{
+		if (myOutline != null)
+		{
+			myOutline.enabled = show;
+		}
+	}
 
     // Wewnętrzna logika decydująca o świeceniu
     private void UpdateHighlightState()
@@ -231,4 +250,15 @@ public class GlitchedObject : MonoBehaviour
         _propBlock.SetInt(hoverPropertyID, shouldGlow ? 1 : 0);
         myRenderer.SetPropertyBlock(_propBlock);
     }
+
+	// returns top material from the stack without popping
+	public Material GetCurrentMaterial()
+	{
+		if (activeComponents.Contains(GlitchComponentType.MaterialSkin) && materialHistory.Count > 0)
+		{
+			return materialHistory.Peek();
+		}
+		return nakedMaterial;
+	}
+
 }

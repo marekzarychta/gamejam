@@ -4,6 +4,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance;
+
+	public Checkpoint checkpoint;
 	
 	private List<GlitchedObject> sceneObjects = new List<GlitchedObject>();
 
@@ -27,6 +29,11 @@ public class GameManager : MonoBehaviour
 		{
 			ValidateGameEnd();
 		}
+	}
+
+	public void Respawn()
+	{
+		checkpoint.MoveToCheckpoint();
 	}
 
 	public float ValidateGameEnd()
