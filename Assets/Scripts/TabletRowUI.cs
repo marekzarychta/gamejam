@@ -14,6 +14,11 @@ public class TabletRowUI : MonoBehaviour
 	public Image image; // To jest tło wiersza
 	public RawImage materialPreviewIcon; // <--- NOWOŚĆ: Mały kwadracik (przypisz w prefabie!)
 
+	[Header("Audio")]
+	public AudioClip addComponentSound;   
+	public AudioClip removeComponentSound;
+	public AudioClip errorSound;          
+	
 	private GlitchComponentType myType;
 	private GlitchedObject currentTarget;
 	private PlayerController player;
@@ -192,6 +197,9 @@ public class TabletRowUI : MonoBehaviour
 			{
 				player.collectedMaterials.Push(stolenMat);
 				player.playerInventory.Add(myType);
+				
+				AudioManager.Instance.PlayUISFX(removeComponentSound);
+				
 				if (currentTarget.GetMaterialStackSize() == 0)
 				{
 					currentTarget.RemoveComponent(myType);
@@ -207,6 +215,12 @@ public class TabletRowUI : MonoBehaviour
 				currentTarget.PushMaterial(matToGive);
 
 				player.playerInventory.Remove(myType);
+				
+				AudioManager.Instance.PlayUISFX(addComponentSound);
+			}
+			else
+			{
+				AudioManager.Instance.PlayUISFX(errorSound);
 			}
 		}
 	}
@@ -217,12 +231,21 @@ public class TabletRowUI : MonoBehaviour
 		{
 			currentTarget.RemoveComponent(myType);
 			player.playerInventory.Add(myType);
-		} else
+			
+			AudioManager.Instance.PlayUISFX(removeComponentSound);
+		} 
+		else
 		{
 			if (!currentTarget.HasComponent(myType))
 			{
 				player.playerInventory.Remove(myType);
 				currentTarget.AddComponent(myType);
+				
+				AudioManager.Instance.PlayUISFX(addComponentSound);
+			}
+			else
+			{
+				AudioManager.Instance.PlayUISFX(errorSound);
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -18,6 +19,15 @@ public class FPPController : MonoBehaviour
 	[Header("Tablet")]
 	public Tablet tablet;
 
+	[Header("Audio - Movement")]
+	public List<AudioClip> footstepSounds; // Lista różnych dźwięków kroków dla różnorodności
+	public AudioClip jumpSound;
+	public AudioClip landSound;
+
+	[Header("Audio Settings")]
+	public float footstepInterval = 0.5f; // Jak często grać krok (w sekundach)
+	public float velocityThreshold = 2f;
+	
 	private CharacterController controller;
 	private Vector3 velocity;
 	private float verticalLookRotation = 0f;
@@ -26,6 +36,9 @@ public class FPPController : MonoBehaviour
 	private bool isTabletVisible = false;
 	private float speedMultiplier = 1f;
 
+	private float footstepTimer;
+	private bool wasGroundedLastFrame;
+	
 	void Start()
 	{
 		controller = GetComponent<CharacterController>();
@@ -33,6 +46,8 @@ public class FPPController : MonoBehaviour
 
 		isTabletVisible = false;
 		if (tablet != null) tablet.SetState(isTabletVisible);
+		
+		wasGroundedLastFrame = true;
 	}
 
 	void Update()
@@ -47,6 +62,16 @@ public class FPPController : MonoBehaviour
 		// Ground check
 		groundedPlayer = controller.isGrounded;
 
+		if (groundedPlayer && !wasGroundedLastFrame)
+		{
+			// ... i spadaliśmy w dół (żeby nie grało przy wchodzeniu pod górkę)
+			if (velocity.y < -0.1f)
+			{
+				AudioManager.Instance.PlaySfx(landSound, 0.2f);
+			}
+		}
+		wasGroundedLastFrame = groundedPlayer;
+		
 		if (groundedPlayer && velocity.y < 0)
 		{
 			velocity.y = -2f;
@@ -63,6 +88,25 @@ public class FPPController : MonoBehaviour
 		if (Input.GetButtonDown("Jump") && groundedPlayer)
 		{
 			velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            
+			// DŹWIĘK SKOKU (3D w miejscu skoku)
+			AudioManager.Instance.PlaySfx(jumpSound, 0.7f);
+		}
+
+		// --- OBSŁUGA KROKÓW ---
+		if (groundedPlayer && controller.velocity.magnitude > velocityThreshold)
+		{
+			footstepTimer -= Time.deltaTime;
+			if (footstepTimer <= 0)
+			{
+				PlayRandomFootstep();
+				footstepTimer = footstepInterval; // Reset timera
+			}
+		}
+		else
+		{
+			// Reset timera jak stoimy, żeby pierwszy krok po ruszeniu był szybciej
+			footstepTimer = 0.1f; 
 		}
 
 		// Gravity
@@ -100,6 +144,18 @@ public class FPPController : MonoBehaviour
 		}
 	}
 
+	private void PlayRandomFootstep()
+	{
+		if (footstepSounds.Count == 0) return;
+
+		// Losujemy dźwięk z listy, żeby nie było monotonnie
+		int index = UnityEngine.Random.Range(0, footstepSounds.Count);
+		AudioClip clip = footstepSounds[index];
+        
+		// Gramy trochę ciszej i losujemy lekko pitch (wysokość), żeby brzmiało naturalniej
+		AudioManager.Instance.PlaySfx(clip, UnityEngine.Random.Range(0.3f, 0.5f));
+	}
+	
 	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
 		/*Rigidbody body = hit.collider.attachedRigidbody;

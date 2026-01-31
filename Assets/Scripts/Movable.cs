@@ -12,7 +12,7 @@ public class Movable : MonoBehaviour
 	public LayerMask passengerMask;
 
 	[Header("Points (Relative Offsets)")]
-	// Teraz to s¹ wektory przesuniêcia wzglêdem Startu, a nie pozycje globalne!
+	// Teraz to sï¿½ wektory przesuniï¿½cia wzglï¿½dem Startu, a nie pozycje globalne!
 	public Vector3 startPoint;
 	public Vector3 endPointHorizontal;
 	public Vector3 endPointVertical;
@@ -25,11 +25,11 @@ public class Movable : MonoBehaviour
 	private Rigidbody rb;
 	private BoxCollider solidCollider;
 
-	void Awake()
+	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
-		rb.isKinematic = true;
-		rb.interpolation = RigidbodyInterpolation.Interpolate;
+		//rb.isKinematic = true;
+		//rb.interpolation = RigidbodyInterpolation.Interpolate;
 
 		foreach (var col in GetComponentsInChildren<BoxCollider>())
 		{
@@ -42,28 +42,28 @@ public class Movable : MonoBehaviour
 
 		if (solidCollider == null) Debug.LogError($"[Movable] BRAK COLLIDERA na obiekcie {name}!");
 
-		// Ustawiamy startPoint raz na pocz¹tku gry
+		// Ustawiamy startPoint raz na poczï¿½tku gry
 		if (startPoint == Vector3.zero) startPoint = transform.position;
 	}
 
 	void OnEnable()
 	{
 		// Wyznaczamy pierwszy cel
-		// Teraz obliczamy pozycjê œwiata dodaj¹c offset do startu
+		// Teraz obliczamy pozycjï¿½ ï¿½wiata dodajï¿½c offset do startu
 		Vector3 worldEndPoint = GetWorldEndPoint();
 
-		// Jeœli jesteœmy bli¿ej startu, jedziemy do koñca. Jak bli¿ej koñca, wracamy na start.
+		// Jeï¿½li jesteï¿½my bliï¿½ej startu, jedziemy do koï¿½ca. Jak bliï¿½ej koï¿½ca, wracamy na start.
 		float distToStart = Vector3.Distance(transform.position, startPoint);
 		float distToEnd = Vector3.Distance(transform.position, worldEndPoint);
 
 		currentTarget = (distToStart < distToEnd) ? worldEndPoint : startPoint;
 	}
 
-	// --- NOWOŒÆ: SNAP PO WY£¥CZENIU ---
+	// --- NOWOï¿½ï¿½: SNAP PO WYï¿½ï¿½CZENIU ---
 	void OnDisable()
 	{
 		// Gdy zabieramy komponent, obiekt wraca na start
-		// U¿ywamy rb.position i transform.position dla pewnoœci
+		// Uï¿½ywamy rb.position i transform.position dla pewnoï¿½ci
 		if (rb != null) rb.position = startPoint;
 		transform.position = startPoint;
 	}
@@ -82,12 +82,12 @@ public class Movable : MonoBehaviour
 
 		if (distanceThisFrame > distToTarget) distanceThisFrame = distToTarget;
 
-		// 1. Wykrywanie Œcian
+		// 1. Wykrywanie ï¿½cian
 		if (rb.SweepTest(direction, out RaycastHit hit, distanceThisFrame + 0.1f, QueryTriggerInteraction.Ignore))
 		{
 			if (((1 << hit.collider.gameObject.layer) & obstacleMask) != 0)
 			{
-				if (showDebugLogs) Debug.Log($"[Movable] Œciana: {hit.collider.name}. Zawracam.");
+				if (showDebugLogs) Debug.Log($"[Movable] ï¿½ciana: {hit.collider.name}. Zawracam.");
 				ToggleTarget();
 				return;
 			}
@@ -100,13 +100,13 @@ public class Movable : MonoBehaviour
 
 		Vector3 platformDelta = newPos - oldPos;
 
-		// 3. Pasa¿erowie
+		// 3. Pasaï¿½erowie
 		if (platformDelta.sqrMagnitude > 0.000001f)
 		{
 			MovePassengers(platformDelta);
 		}
 
-		// 4. Cel osi¹gniêty?
+		// 4. Cel osiï¿½gniï¿½ty?
 		if (Vector3.Distance(rb.position, currentTarget) < 0.001f) ToggleTarget();
 	}
 
@@ -141,8 +141,8 @@ public class Movable : MonoBehaviour
 	{
 		Vector3 worldEndPoint = GetWorldEndPoint();
 
-		// Jeœli celem by³ start -> teraz koniec (z offsetem)
-		// Jeœli celem by³ koniec -> teraz start
+		// Jeï¿½li celem byï¿½ start -> teraz koniec (z offsetem)
+		// Jeï¿½li celem byï¿½ koniec -> teraz start
 		if (Vector3.Distance(currentTarget, startPoint) < 0.1f)
 			currentTarget = worldEndPoint;
 		else
@@ -156,20 +156,20 @@ public class Movable : MonoBehaviour
 		return startPoint + offset;
 	}
 
-	// --- WIZUALIZACJA GIZMOS (ŒCIE¯KA) ---
+	// --- WIZUALIZACJA GIZMOS (ï¿½CIEï¿½KA) ---
 	private void OnDrawGizmos()
 	{
 		Gizmos.color = Color.yellow;
 
-		// W edytorze (gdy gra nie dzia³a) u¿ywamy aktualnej pozycji jako startu, 
-		// ¿eby widzieæ podgl¹d "na ¿ywo" podczas przesuwania obiektu.
+		// W edytorze (gdy gra nie dziaï¿½a) uï¿½ywamy aktualnej pozycji jako startu, 
+		// ï¿½eby widzieï¿½ podglï¿½d "na ï¿½ywo" podczas przesuwania obiektu.
 		Vector3 s = Application.isPlaying ? startPoint : transform.position;
 
-		// Obliczamy koniec dodaj¹c offset
+		// Obliczamy koniec dodajï¿½c offset
 		Vector3 offset = horizontal ? endPointHorizontal : endPointVertical;
 		Vector3 e = s + offset;
 
-		// Rysujemy liniê i kropki
+		// Rysujemy liniï¿½ i kropki
 		Gizmos.DrawLine(s, e);
 		Gizmos.DrawSphere(s, 0.1f);
 		Gizmos.DrawSphere(e, 0.1f);
