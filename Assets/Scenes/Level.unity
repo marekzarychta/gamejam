@@ -596,6 +596,7 @@ MonoBehaviour:
   myRenderer: {fileID: 948149958}
   myPushable: {fileID: 948149962}
   myMovable: {fileID: 948149963}
+  myRotatable: {fileID: 0}
   myEnlarge: {fileID: 0}
   myShrink: {fileID: 0}
   nakedMaterial: {fileID: 2100000, guid: 8e074b7088aed5d4c9148f97443c06b1, type: 2}
@@ -923,6 +924,7 @@ MonoBehaviour:
   myRenderer: {fileID: 1228595206}
   myPushable: {fileID: 0}
   myMovable: {fileID: 0}
+  myRotatable: {fileID: 0}
   myEnlarge: {fileID: 0}
   myShrink: {fileID: 0}
   nakedMaterial: {fileID: 0}
@@ -1220,6 +1222,7 @@ MonoBehaviour:
   myRenderer: {fileID: 1795092005}
   myPushable: {fileID: 0}
   myMovable: {fileID: 1795092010}
+  myRotatable: {fileID: 0}
   myEnlarge: {fileID: 0}
   myShrink: {fileID: 0}
   nakedMaterial: {fileID: 2100000, guid: 8e074b7088aed5d4c9148f97443c06b1, type: 2}
@@ -1463,6 +1466,18 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2097571260269138524, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2097571260269138524, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2097571260269138524, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2474132320896842682, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1517,6 +1532,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5946824271072630374, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6560550927505119747, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6560550927505119747, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6560550927505119747, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8264898468515165083, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
