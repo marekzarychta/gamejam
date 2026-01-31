@@ -1660,7 +1660,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a82739e1c570674fb7d62d49490042f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  startingComponents: 01000000020000000000000003000000
+  startingComponents: 0100000002000000000000000300000005000000
   finalState: 02000000
   isImportant: 1
   myCollider: {fileID: 948149957}
@@ -1714,7 +1714,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: e60a2078063f4de41806bcea02654ad8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2250,9 +2250,10 @@ GameObject:
   - component: {fileID: 1228595207}
   - component: {fileID: 1228595206}
   - component: {fileID: 1228595205}
-  m_Layer: 0
+  - component: {fileID: 1228595209}
+  m_Layer: 6
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: GlitchObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2304,7 +2305,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 414dd7a82a84b044fbcf9c2060bce921, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2351,6 +2352,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1228595209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228595204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a82739e1c570674fb7d62d49490042f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlitchedObject
+  startingComponents: 050000000200000000000000
+  finalState: 
+  isImportant: 0
+  myCollider: {fileID: 1228595205}
+  myRigidbody: {fileID: 0}
+  myRenderer: {fileID: 1228595206}
+  myPushable: {fileID: 0}
+  myMovable: {fileID: 0}
 --- !u!1 &1698248239
 GameObject:
   m_ObjectHideFlags: 0
@@ -2479,6 +2500,7 @@ GameObject:
   - component: {fileID: 1795092004}
   - component: {fileID: 1795092010}
   - component: {fileID: 1795092009}
+  - component: {fileID: 1795092011}
   - component: {fileID: 1795092008}
   m_Layer: 6
   m_Name: Cube
@@ -2533,7 +2555,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 4dd4d4594675c6547b6923a31d975ef6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2619,7 +2641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a82739e1c570674fb7d62d49490042f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlitchedObject
-  startingComponents: 020000000000000004000000
+  startingComponents: 02000000000000000400000005000000
   finalState: 02000000
   isImportant: 1
   myCollider: {fileID: 1795092004}
@@ -2644,6 +2666,19 @@ MonoBehaviour:
   startPoint: {x: 0, y: 0, z: 0}
   endPointHorizontal: {x: 2.57, y: 5.9, z: -5.62}
   endPointVertical: {x: -4.7, y: 1.52, z: -1.04}
+--- !u!114 &1795092011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795092003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfa1c8d7511ab264bbc3e416f5ea463b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pushable
+  pushPower: 2
 --- !u!1 &1840997091
 GameObject:
   m_ObjectHideFlags: 0

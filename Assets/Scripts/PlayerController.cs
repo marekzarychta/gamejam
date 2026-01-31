@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Ekwipunek")]
     public List<GlitchComponentType> playerInventory = new List<GlitchComponentType>();
+    public Stack<Material> collectedMaterials = new Stack<Material>();
 
     [Header("Ustawienia")]
     public float interactionDistance = 5f;
@@ -18,20 +19,17 @@ public class PlayerController : MonoBehaviour
     public Transform cursorCanvas;
     public Transform interactionTooltip;
 
-    private bool isCursorMode = false; // Czy jesteśmy w trybie klikania?
+    private bool isCursorMode = false;
 
     void Start()
     {
-        // Inicjalizujemy stałą listę gracza
         tabletManager.InitializePlayerInventory(this);
     }
 
     void Update()
     {
-        // 1. Ciągły Raycast - aktualizuje UI zależnie od tego na co patrzysz
         HandleRaycast();
 
-        // 2. Przełączanie trybu (Kamera vs Kursor)
         if (Input.GetKeyDown(KeyCode.E))
         {
             ToggleTablet();
@@ -40,8 +38,6 @@ public class PlayerController : MonoBehaviour
 
     void HandleRaycast()
     {
-        // Jeśli jesteśmy w trybie kursora (klikamy), nie aktualizujemy celu,
-        // żeby lista nie zniknęła jak lekko przesuniemy myszkę na bok przycisku.
         if (isCursorMode) return;
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);

@@ -7,7 +7,8 @@ public enum GlitchComponentType
 	Gravity,
 	Visibility,
 	Pushable,
-	Movable
+	Movable,
+	MaterialSkin
 }
 
 public class GlitchedObject : MonoBehaviour
@@ -28,19 +29,47 @@ public class GlitchedObject : MonoBehaviour
 
 	public HashSet<GlitchComponentType> activeComponents = new HashSet<GlitchComponentType>();
 
+	private Stack<Material> materialHistory = new Stack<Material>();
+
+	private static Material nakedMaterial;
+
 	void Start()
 	{
+		if (nakedMaterial == null)
+		{
+			nakedMaterial = new Material(Shader.Find("Standard"));
+			nakedMaterial.color = new Color(1f, 0f, 1f); // Wœciek³y Ró¿ (Magenta)
+			nakedMaterial.name = "ERROR_NO_TEXTURE";
+		}
+
 		foreach (var comp in startingComponents)
 		{
 			activeComponents.Add(comp);
 		}
+
+		if (myRenderer != null)
+		{
+			if (activeComponents.Contains(GlitchComponentType.MaterialSkin))
+			{
+				materialHistory.Push(myRenderer.material);
+			}
+		}
+
 		UpdatePhysicalState();
 	}
 
 	public void AddComponent(GlitchComponentType type)
 	{
+		bool isNew = !activeComponents.Contains(type);
 		if (activeComponents.Add(type))
 		{
+			if (type == GlitchComponentType.MaterialSkin && isNew)
+			{
+				if (myRenderer != null && materialHistory.Count == 0)
+				{
+					materialHistory.Push(myRenderer.material);
+				}
+			}
 			UpdatePhysicalState();
 		}
 	}
@@ -58,6 +87,41 @@ public class GlitchedObject : MonoBehaviour
 		return activeComponents.Contains(type);
 	}
 
+	public void PushMaterial(Material newMat)
+	{
+		materialHistory.Push(newMat);
+		UpdateVisuals();
+	}
+
+	public Material PopMaterial()
+	{
+		if (materialHistory.Count > 0)
+		{
+			Material mat = materialHistory.Pop();
+			UpdateVisuals();
+			return mat;
+		}
+		return null; 
+	}
+
+	public int GetMaterialStackSize()
+	{
+		return materialHistory.Count;
+	}
+
+	void UpdateVisuals()
+	{
+		if (myRenderer == null) return;
+
+		if (activeComponents.Contains(GlitchComponentType.MaterialSkin) && materialHistory.Count > 0)
+		{
+			myRenderer.material = materialHistory.Peek();
+		} else
+		{
+			myRenderer.material = nakedMaterial;
+		}
+	}
+
 	void UpdatePhysicalState()
 	{
 		// COLLIDER
@@ -68,7 +132,10 @@ public class GlitchedObject : MonoBehaviour
 		}
 
 		if (myRenderer != null)
+		{
 			myRenderer.enabled = activeComponents.Contains(GlitchComponentType.Visibility);
+			UpdateVisuals();
+		}
 
 		bool isMovable = activeComponents.Contains(GlitchComponentType.Movable);
 		bool isPushable = activeComponents.Contains(GlitchComponentType.Pushable);

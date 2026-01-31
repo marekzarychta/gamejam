@@ -5,7 +5,7 @@ using TMPro;
 public class TabletRowUI : MonoBehaviour
 {
     public TextMeshProUGUI componentNameText;
-    public TextMeshProUGUI quantityText; // <--- NOWE POLE (Dodaj mały tekst w rogu przycisku)
+    public TextMeshProUGUI quantityText;
     public Button actionButton;
     public TextMeshProUGUI buttonText;
 
@@ -16,7 +16,6 @@ public class TabletRowUI : MonoBehaviour
     private System.Action onActionCompleted; 
     private bool isTakingMode;
 
-    // Dodajemy parametr 'int quantity'
     public void Setup(GlitchComponentType type, int quantity, GlitchedObject target, PlayerController playerRef, bool takingMode, System.Action refreshCallback)
     {
         myType = type;
@@ -27,7 +26,6 @@ public class TabletRowUI : MonoBehaviour
 
         componentNameText.text = type.ToString();
 
-        // Obsługa wyświetlania ilości
         if (quantity > 1)
         {
             quantityText.text = "x" + quantity.ToString();
@@ -36,7 +34,7 @@ public class TabletRowUI : MonoBehaviour
         else
         {
             quantityText.text = "";
-            quantityText.gameObject.SetActive(false); // Ukrywamy, jak jest tylko 1 sztuka
+            quantityText.gameObject.SetActive(false);
         }
 
         if (isTakingMode)
@@ -50,14 +48,19 @@ public class TabletRowUI : MonoBehaviour
             buttonText.text = "ADD";
             actionButton.image.color = new Color(0.5f, 1f, 0.5f);
 
-            // WAŻNE: Jeżeli obiekt już ma ten komponent, nie możemy dodać drugiego takiego samego
-            // Blokujemy przycisk, żeby nie tracić komponentów bez sensu
             if (target != null && target.HasComponent(myType))
             {
-                actionButton.interactable = false;
-                buttonText.text = "ADDED";
-                actionButton.image.color = Color.gray;
-            }
+				if (myType == GlitchComponentType.MaterialSkin)
+				{
+					actionButton.interactable = true;
+					buttonText.text = "LAYER";
+				} else
+				{
+					actionButton.interactable = false;
+					buttonText.text = "HAS IT";
+					actionButton.image.color = Color.gray;
+				}
+			}
             else
             {
                 actionButton.interactable = true;
@@ -69,28 +72,63 @@ public class TabletRowUI : MonoBehaviour
     {
         if (currentTarget == null && !isTakingMode) 
         {
-            Debug.LogWarning("Nie ma obiektu docelowego!");
+            //Debug.LogWarning("Nie ma obiektu docelowego!");
             return;
         }
 
+		if (myType == GlitchComponentType.MaterialSkin)
+		{
+			HandleMaterialTransfer();
+		} else
+		{
+			HandleStandardTransfer();
+		}
+
+		onActionCompleted?.Invoke();
+    }
+
+    void HandleMaterialTransfer()
+    {
         if (isTakingMode)
         {
-            // Zabieramy od obiektu -> Dodajemy do listy gracza (kolejna sztuka)
-            currentTarget.RemoveComponent(myType);
-            player.playerInventory.Add(myType);
-        }
-        else
-        {
-            // Dajemy obiektowi
-            if (!currentTarget.HasComponent(myType))
-            {
-                // Remove usuwa TYLKO PIERWSZE wystąpienie z listy. 
-                // Jeśli masz Gravity, Gravity - usunie jedno, drugie zostanie.
-                player.playerInventory.Remove(myType);
-                currentTarget.AddComponent(myType);
-            }
-        }
+            Material stolenMat = currentTarget.PopMaterial();
 
-        onActionCompleted?.Invoke();
+            if (stolenMat != null)
+            {
+                player.collectedMaterials.Push(stolenMat);
+                player.playerInventory.Add(myType);
+                if (currentTarget.GetMaterialStackSize() == 0)
+                {
+					currentTarget.RemoveComponent(myType);
+				}
+			}
+        } else {
+			if (player.collectedMaterials.Count > 0)
+			{
+				Material matToGive = player.collectedMaterials.Pop();
+
+				currentTarget.AddComponent(myType);
+				currentTarget.PushMaterial(matToGive);
+
+				player.playerInventory.Remove(myType);
+			}
+		}
     }
+
+    void HandleStandardTransfer() 
+    {
+		if (isTakingMode)
+		{
+			currentTarget.RemoveComponent(myType);
+			player.playerInventory.Add(myType);
+		} else
+		{
+			if (!currentTarget.HasComponent(myType))
+			{
+				player.playerInventory.Remove(myType);
+				currentTarget.AddComponent(myType);
+			}
+		}
+	}
+
 }

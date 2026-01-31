@@ -15,6 +15,8 @@ public class Pushable : MonoBehaviour
 
 	public void Push(Vector3 desiredVelocity, Transform pusher)
 	{
+		if (!this.enabled) return;
+
 		if (rb.isKinematic) return;
 
 		if (desiredVelocity.magnitude < 0.1f) return;
