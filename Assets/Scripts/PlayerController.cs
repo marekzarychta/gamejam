@@ -112,4 +112,14 @@ public class PlayerController : MonoBehaviour
             HandleRaycast(); 
         }
     }
+
+	public Material GetCurrentHeldMaterial()
+	{
+		if (collectedMaterials.Count > 0)
+		{
+			return collectedMaterials.Peek();
+		}
+		return null;
+	}
+
 }

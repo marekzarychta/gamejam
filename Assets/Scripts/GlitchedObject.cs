@@ -231,4 +231,15 @@ public class GlitchedObject : MonoBehaviour
         _propBlock.SetInt(hoverPropertyID, shouldGlow ? 1 : 0);
         myRenderer.SetPropertyBlock(_propBlock);
     }
+
+	// returns top material from the stack without popping
+	public Material GetCurrentMaterial()
+	{
+		if (activeComponents.Contains(GlitchComponentType.MaterialSkin) && materialHistory.Count > 0)
+		{
+			return materialHistory.Peek();
+		}
+		return nakedMaterial;
+	}
+
 }
