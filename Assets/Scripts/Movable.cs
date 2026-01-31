@@ -7,18 +7,19 @@ public class Movable : MonoBehaviour
 	public bool horizontal;
 	public float velocity = 2f;
 
-	[Header("Detection (Kluczowe!)")]
-	public LayerMask obstacleMask;  // Warstwa œcian (nie gracza!)
-	public LayerMask passengerMask; // Warstwa gracza
+	[Header("Detection")]
+	public LayerMask obstacleMask;
+	public LayerMask passengerMask;
 
-	[Header("Debug & Manual Override")]
-	public bool showDebugLogs = true;
-	public CharacterController manualPlayer; // Przeci¹gnij tu Gracza rêcznie, jeœli automat zawiedzie!
-
-	[Header("Points")]
+	[Header("Points (Relative Offsets)")]
+	// Teraz to s¹ wektory przesuniêcia wzglêdem Startu, a nie pozycje globalne!
 	public Vector3 startPoint;
 	public Vector3 endPointHorizontal;
 	public Vector3 endPointVertical;
+
+	[Header("Debug")]
+	public bool showDebugLogs = true;
+	public CharacterController manualPlayer;
 
 	private Vector3 currentTarget;
 	private Rigidbody rb;
@@ -30,7 +31,6 @@ public class Movable : MonoBehaviour
 		rb.isKinematic = true;
 		rb.interpolation = RigidbodyInterpolation.Interpolate;
 
-		// Szukamy collidera platformy (tego twardego)
 		foreach (var col in GetComponentsInChildren<BoxCollider>())
 		{
 			if (!col.isTrigger)
@@ -42,15 +42,32 @@ public class Movable : MonoBehaviour
 
 		if (solidCollider == null) Debug.LogError($"[Movable] BRAK COLLIDERA na obiekcie {name}!");
 
+		// Ustawiamy startPoint raz na pocz¹tku gry
 		if (startPoint == Vector3.zero) startPoint = transform.position;
 	}
 
 	void OnEnable()
 	{
-		Vector3 endPoint = horizontal ? endPointHorizontal : endPointVertical;
-		currentTarget = (Vector3.Distance(transform.position, startPoint) < Vector3.Distance(transform.position, endPoint))
-						? endPoint : startPoint;
+		// Wyznaczamy pierwszy cel
+		// Teraz obliczamy pozycjê œwiata dodaj¹c offset do startu
+		Vector3 worldEndPoint = GetWorldEndPoint();
+
+		// Jeœli jesteœmy bli¿ej startu, jedziemy do koñca. Jak bli¿ej koñca, wracamy na start.
+		float distToStart = Vector3.Distance(transform.position, startPoint);
+		float distToEnd = Vector3.Distance(transform.position, worldEndPoint);
+
+		currentTarget = (distToStart < distToEnd) ? worldEndPoint : startPoint;
 	}
+
+	// --- NOWOŒÆ: SNAP PO WY£¥CZENIU ---
+	void OnDisable()
+	{
+		// Gdy zabieramy komponent, obiekt wraca na start
+		// U¿ywamy rb.position i transform.position dla pewnoœci
+		if (rb != null) rb.position = startPoint;
+		transform.position = startPoint;
+	}
+	// ----------------------------------
 
 	void FixedUpdate()
 	{
@@ -65,96 +82,96 @@ public class Movable : MonoBehaviour
 
 		if (distanceThisFrame > distToTarget) distanceThisFrame = distToTarget;
 
-		// 1. Wykrywanie Œcian (SweepTest)
+		// 1. Wykrywanie Œcian
 		if (rb.SweepTest(direction, out RaycastHit hit, distanceThisFrame + 0.1f, QueryTriggerInteraction.Ignore))
 		{
-			// Sprawdzamy, czy to œciana (czy jest w masce przeszkód)
 			if (((1 << hit.collider.gameObject.layer) & obstacleMask) != 0)
 			{
-				if (showDebugLogs) Debug.Log($"[Movable] Uderzy³em w œcianê: {hit.collider.name}. Zawracam.");
+				if (showDebugLogs) Debug.Log($"[Movable] Œciana: {hit.collider.name}. Zawracam.");
 				ToggleTarget();
 				return;
 			}
 		}
 
-		// 2. Ruch Windy
+		// 2. Ruch
 		Vector3 oldPos = rb.position;
 		Vector3 newPos = Vector3.MoveTowards(rb.position, currentTarget, distanceThisFrame);
 		rb.MovePosition(newPos);
 
 		Vector3 platformDelta = newPos - oldPos;
 
-		// 3. Ci¹gniêcie Pasa¿erów
+		// 3. Pasa¿erowie
 		if (platformDelta.sqrMagnitude > 0.000001f)
 		{
 			MovePassengers(platformDelta);
 		}
 
-		// 4. Czy dojechaliœmy?
+		// 4. Cel osi¹gniêty?
 		if (Vector3.Distance(rb.position, currentTarget) < 0.001f) ToggleTarget();
 	}
 
 	void MovePassengers(Vector3 delta)
 	{
-		// Opcja A: Rêcznie przypisany gracz (Test Ostateczny)
 		if (manualPlayer != null)
 		{
 			manualPlayer.Move(delta);
-			return; // Jeœli u¿ywamy manuala, pomijamy automat
+			return;
 		}
 
-		// Opcja B: Automat (Skaner)
 		if (solidCollider == null) return;
 
-		// Logika pude³ka detekcji
-		Transform t = solidCollider.transform; // U¿ywamy transformu collidera (mo¿e byæ dzieckiem)
-		Vector3 boxSize = Vector3.Scale(solidCollider.size, t.lossyScale); // Skala œwiatowa
-
-		// Pude³ko jest trochê mniejsze od platformy (0.8 szerokoœci) i wystaje 0.5m w górê
+		Transform t = solidCollider.transform;
+		Vector3 boxSize = Vector3.Scale(solidCollider.size, t.lossyScale);
 		Vector3 detectionSize = new Vector3(boxSize.x * 0.8f, 0.5f, boxSize.z * 0.8f);
 		Vector3 detectionCenter = t.TransformPoint(solidCollider.center) + Vector3.up * (boxSize.y * 0.5f + 0.25f);
 
 		Collider[] hits = Physics.OverlapBox(detectionCenter, detectionSize / 2f, t.rotation, passengerMask, QueryTriggerInteraction.Ignore);
 
-		if (hits.Length > 0)
+		foreach (var hit in hits)
 		{
-			foreach (var hit in hits)
+			CharacterController cc = hit.GetComponent<CharacterController>();
+			if (cc != null)
 			{
-				CharacterController cc = hit.GetComponent<CharacterController>();
-				if (cc != null)
-				{
-					if (showDebugLogs) Debug.Log($"[Movable] Ci¹gnê pasa¿era: {cc.name}");
-					cc.Move(delta);
-				}
+				cc.Move(delta);
 			}
-		} else
-		{
-			// Odkomentuj to, jeœli chcesz widzieæ spam w konsoli gdy nikogo nie ma
-			// if(showDebugLogs) Debug.Log("[Movable] Pusto na dachu...");
 		}
 	}
 
 	void ToggleTarget()
 	{
-		Vector3 endPoint = horizontal ? endPointHorizontal : endPointVertical;
-		currentTarget = (currentTarget == startPoint) ? endPoint : startPoint;
+		Vector3 worldEndPoint = GetWorldEndPoint();
+
+		// Jeœli celem by³ start -> teraz koniec (z offsetem)
+		// Jeœli celem by³ koniec -> teraz start
+		if (Vector3.Distance(currentTarget, startPoint) < 0.1f)
+			currentTarget = worldEndPoint;
+		else
+			currentTarget = startPoint;
 	}
 
-	// Rysowanie Debugowe (Pude³ko detekcji)
+	// Pomocnicza funkcja do obliczania globalnej pozycji celu
+	Vector3 GetWorldEndPoint()
+	{
+		Vector3 offset = horizontal ? endPointHorizontal : endPointVertical;
+		return startPoint + offset;
+	}
+
+	// --- WIZUALIZACJA GIZMOS (ŒCIE¯KA) ---
 	private void OnDrawGizmos()
 	{
-		if (solidCollider == null) solidCollider = GetComponentInChildren<BoxCollider>();
-		if (solidCollider != null)
-		{
-			Gizmos.color = new Color(0, 1, 0, 0.4f); // Pó³przezroczysty zielony
+		Gizmos.color = Color.yellow;
 
-			Transform t = solidCollider.transform;
-			Vector3 boxSize = Vector3.Scale(solidCollider.size, t.lossyScale);
-			Vector3 detectionSize = new Vector3(boxSize.x * 0.8f, 0.5f, boxSize.z * 0.8f);
-			Vector3 center = t.TransformPoint(solidCollider.center) + Vector3.up * (boxSize.y * 0.5f + 0.25f);
+		// W edytorze (gdy gra nie dzia³a) u¿ywamy aktualnej pozycji jako startu, 
+		// ¿eby widzieæ podgl¹d "na ¿ywo" podczas przesuwania obiektu.
+		Vector3 s = Application.isPlaying ? startPoint : transform.position;
 
-			Gizmos.matrix = Matrix4x4.TRS(center, t.rotation, detectionSize);
-			Gizmos.DrawCube(Vector3.zero, Vector3.one);
-		}
+		// Obliczamy koniec dodaj¹c offset
+		Vector3 offset = horizontal ? endPointHorizontal : endPointVertical;
+		Vector3 e = s + offset;
+
+		// Rysujemy liniê i kropki
+		Gizmos.DrawLine(s, e);
+		Gizmos.DrawSphere(s, 0.1f);
+		Gizmos.DrawSphere(e, 0.1f);
 	}
 }
