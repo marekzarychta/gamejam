@@ -13,7 +13,29 @@ public class Pushable : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 	}
 
-	public void Push(Vector3 desiredVelocity, Transform pusher)
+	public void Push(Vector3 pushDirection)
+	{
+		if (!this.enabled || rb.isKinematic) return;
+
+		// ApplyForce powoduje naturalne przyspieszenie
+		// ForceMode.Impulse symuluje nagłe uderzenie (krok gracza)
+		// pushDirection powinno być znormalizowane w FPPController
+        
+		rb.AddForce(pushDirection * pushPower, ForceMode.Impulse);
+	}
+	
+	/*public void Push(Vector3 desiredVelocity, Transform pusher)
+	{
+		if (!this.enabled) return;
+		if (rb.isKinematic) return;
+		
+		Vector3 newVelocity = desiredVelocity;
+		newVelocity.y = rb.linearVelocity.y; 
+
+		rb.linearVelocity = newVelocity;
+	}*/
+	
+	/*public void Push(Vector3 desiredVelocity, Transform pusher)
 	{
 		if (!this.enabled) return;
 
@@ -44,6 +66,6 @@ public class Pushable : MonoBehaviour
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 }

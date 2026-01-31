@@ -24,6 +24,7 @@ public class FPPController : MonoBehaviour
 
 	// Zmienna stanu tabletu
 	private bool isTabletVisible = false;
+	private float speedMultiplier = 1f;
 
 	void Start()
 	{
@@ -56,7 +57,7 @@ public class FPPController : MonoBehaviour
 		float z = Input.GetAxis("Vertical");
 
 		Vector3 move = transform.right * x + transform.forward * z;
-		controller.Move(move * moveSpeed * Time.deltaTime);
+		controller.Move(move * (moveSpeed * speedMultiplier) * Time.deltaTime);
 
 		// Jump
 		if (Input.GetButtonDown("Jump") && groundedPlayer)
@@ -81,6 +82,11 @@ public class FPPController : MonoBehaviour
 		transform.Rotate(Vector3.up * mouseX);
 	}
 
+	public void SetSpeedMultiplier(float multiplier)
+	{
+		speedMultiplier = multiplier;
+	}
+	
 	public void TabletInput()
 	{
 		if (Input.GetKeyDown(KeyCode.F))
@@ -96,7 +102,7 @@ public class FPPController : MonoBehaviour
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
-		Rigidbody body = hit.collider.attachedRigidbody;
+		/*Rigidbody body = hit.collider.attachedRigidbody;
 		if (body == null || body.isKinematic) return;
 
 		Pushable pushableObject = hit.gameObject.GetComponent<Pushable>();
@@ -108,7 +114,20 @@ public class FPPController : MonoBehaviour
 
 		Vector3 targetVelocity = pushDir * pushableObject.pushPower;
 
-		pushableObject.Push(targetVelocity, transform);
+		pushableObject.Push(targetVelocity, transform);*/
+		
+		Rigidbody body = hit.collider.attachedRigidbody;
+		if (body == null || body.isKinematic) return;
+
+		Pushable pushableObject = hit.gameObject.GetComponent<Pushable>();
+		if (pushableObject == null) return;
+
+		// Pchamy tylko w poziomie
+		if (hit.moveDirection.y < -0.3f) return;
+		Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+
+		// Wywołujemy nową metodę bez "Transform pusher" i bez obliczania velocity
+		pushableObject.Push(pushDir);
 	}
 
 }

@@ -26,35 +26,40 @@ public class GlitchedObject : MonoBehaviour
 	public Renderer myRenderer;
 	public Pushable myPushable;
 	public Movable myMovable;
+	public Material nakedMaterial;
 
 	public HashSet<GlitchComponentType> activeComponents = new HashSet<GlitchComponentType>();
 
 	private Stack<Material> materialHistory = new Stack<Material>();
-
-	private static Material nakedMaterial;
 	
 	private Material myMaterial;
+	private MaterialPropertyBlock _propBlock;
     private int hoverPropertyID;
 
 	void Start()
 	{
 		if (nakedMaterial == null)
 		{
-			nakedMaterial = new Material(Shader.Find("Standard"));
-			nakedMaterial.color = new Color(1f, 0f, 1f); // W�ciek�y R� (Magenta)
-			nakedMaterial.name = "ERROR_NO_TEXTURE";
+			Debug.LogWarning("BRAK PRZYPISANEGO NAKED MATERIAL W OBIEKCIE: " + gameObject.name);
 		}
+		
+		/*
+		if (nakedMaterial == null)
+		{
+			nakedMaterial = new Material(Shader.Find("Standard"));
+			nakedMaterial.color = new Color(1f, 0f, 1f); // W�ciek�y R� (Magenta)
+			nakedMaterial.name = "ERROR_NO_TEXTURE";
+		}*/
 
 		foreach (var comp in startingComponents)
 		{
 			activeComponents.Add(comp);
 		}
 
+		_propBlock = new MaterialPropertyBlock();
 		if (myRenderer != null)
         {
-            // Pobieramy instancję materiału, żeby nie zmieniać wszystkich obiektów na raz
-            myMaterial = myRenderer.material; 
-            // Zamieniamy tekst "_IsHovered" na szybki ID
+            //myMaterial = myRenderer.material; 
             hoverPropertyID = Shader.PropertyToID("_IsHovered");
         }
 
@@ -74,13 +79,13 @@ public class GlitchedObject : MonoBehaviour
 		bool isNew = !activeComponents.Contains(type);
 		if (activeComponents.Add(type))
 		{
-			if (type == GlitchComponentType.MaterialSkin && isNew)
+			/*if (type == GlitchComponentType.MaterialSkin && isNew)
 			{
 				if (myRenderer != null && materialHistory.Count == 0)
 				{
 					materialHistory.Push(myRenderer.material);
 				}
-			}
+			}*/
 			UpdatePhysicalState();
 		}
 	}
@@ -157,7 +162,43 @@ public class GlitchedObject : MonoBehaviour
 
 		if (myRigidbody != null)
 		{
-			myRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+			// MOVABLE (Winda/Platforma) - ma najwyższy priorytet
+			if (isMovable) 
+			{
+				myRigidbody.isKinematic = true; // MUSI być true, żeby skrypt Movable nim sterował
+				myRigidbody.useGravity = false;
+				myRigidbody.constraints = RigidbodyConstraints.None;
+				myRigidbody.interpolation = RigidbodyInterpolation.None; // Kinematic move position tego nie potrzebuje aż tak
+			} 
+			// PUSHABLE (Fizyczna skrzynia)
+			else if (isPushable) 
+			{
+				myRigidbody.isKinematic = false; // Fizyka musi działać
+				myRigidbody.useGravity = hasGravity; // Grawitacja zależy od komponentu Gravity
+				myRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+				
+				// Ustawiamy masę lub damping, żeby czuć ciężar
+				myRigidbody.linearDamping = 1f; 
+				myRigidbody.angularDamping = 0.5f;
+				myRigidbody.constraints = RigidbodyConstraints.None; // Pozwalamy się przewracać
+			}
+			// DEFAULT (Ani to, ani to - np. statyczna ściana albo lewitujący obiekt)
+			else 
+			{
+				// Jeśli ma grawitację, to spada, jeśli nie, to wisi w powietrzu (Kinematic)
+				if (hasGravity)
+				{
+					myRigidbody.isKinematic = false;
+					myRigidbody.useGravity = true;
+				}
+				else
+				{
+					myRigidbody.isKinematic = true; // Zastyga w powietrzu
+					myRigidbody.useGravity = false;
+				}
+			}
+			
+			/*myRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
 			if (isMovable) {
 				myRigidbody.isKinematic = true;
@@ -187,7 +228,7 @@ public class GlitchedObject : MonoBehaviour
 					myRigidbody.linearDamping = 0.5f;
 					myRigidbody.constraints = RigidbodyConstraints.None;
 				}
-			}
+			}*/
 		}
 	}
 
@@ -198,10 +239,16 @@ public class GlitchedObject : MonoBehaviour
     
     public void SetHighlight(bool active)
     {
-        if (myMaterial == null) return;
+        if (myRenderer == null) return;
 
-        // W shaderze boolean to tak naprawdę integer (0 = false, 1 = true)
-        myMaterial.SetInt(hoverPropertyID, active ? 1 : 0);
+        // 1. Pobierz aktualne właściwości z Renderera (żeby nie nadpisać innych zmian)
+        myRenderer.GetPropertyBlock(_propBlock);
+
+        // 2. Ustaw wartość w bloku (zamiast w materiale)
+        _propBlock.SetInt(hoverPropertyID, active ? 1 : 0);
+
+        // 3. Zaaplikuj blok z powrotem na Renderer
+        myRenderer.SetPropertyBlock(_propBlock);
     }
 
 }

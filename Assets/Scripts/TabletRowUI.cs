@@ -39,13 +39,13 @@ public class TabletRowUI : MonoBehaviour
 
         if (isTakingMode)
         {
-            buttonText.text = "REMOVE";
+            buttonText.text = "-";
             actionButton.image.color = new Color(1f, 0.5f, 0.5f);
             actionButton.interactable = true;
         }
         else
         {
-            buttonText.text = "ADD";
+            buttonText.text = "+";
             actionButton.image.color = new Color(0.5f, 1f, 0.5f);
 
             if (target != null && target.HasComponent(myType))
@@ -53,11 +53,11 @@ public class TabletRowUI : MonoBehaviour
 				if (myType == GlitchComponentType.MaterialSkin)
 				{
 					actionButton.interactable = true;
-					buttonText.text = "LAYER";
+					buttonText.text = "+";
 				} else
 				{
 					actionButton.interactable = false;
-					buttonText.text = "HAS IT";
+					buttonText.text = "/";
 					actionButton.image.color = Color.gray;
 				}
 			}

@@ -40,8 +40,16 @@ public class TabletManager : MonoBehaviour
 
             foreach (var comp in target.activeComponents)
             {
-                // Komponenty obiektu zawsze mają ilość 1, bo to HashSet
-                CreateRow(comp, 1, objectComponentsContainer, true);
+                // DOMYŚLNIE 1
+                int count = 1;
+
+                // WYJĄTEK DLA MATERIAŁÓW: POBIERZ ROZMIAR STOSU
+                if (comp == GlitchComponentType.MaterialSkin)
+                {
+                    count = target.GetMaterialStackSize();
+                }
+
+                CreateRow(comp, count, objectComponentsContainer, true);
             }
         }
         else
