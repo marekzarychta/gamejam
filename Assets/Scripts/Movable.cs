@@ -25,11 +25,11 @@ public class Movable : MonoBehaviour
 	private Rigidbody rb;
 	private BoxCollider solidCollider;
 
+	private bool initialized = false;
+
 	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
-		//rb.isKinematic = true;
-		//rb.interpolation = RigidbodyInterpolation.Interpolate;
 
 		foreach (var col in GetComponentsInChildren<BoxCollider>())
 		{
@@ -42,17 +42,22 @@ public class Movable : MonoBehaviour
 
 		if (solidCollider == null) Debug.LogError($"[Movable] BRAK COLLIDERA na obiekcie {name}!");
 
-		// Ustawiamy startPoint raz na pocz�tku gry
-		if (startPoint == Vector3.zero) startPoint = transform.position;
+		// USUŃ STĄD INICJALIZACJĘ STARTPOINT!
+		// Przenosimy ją do OnEnable, żeby zadziałała w momencie "otrzymania glitcha".
 	}
 
 	void OnEnable()
 	{
-		// Wyznaczamy pierwszy cel
-		// Teraz obliczamy pozycj� �wiata dodaj�c offset do startu
+		// POPRAWKA: Ustawiamy startPoint w momencie aktywacji komponentu
+		// Dzięki temu ignorujemy stare współrzędne z Inspectora.
+		if (!initialized)
+		{
+			startPoint = transform.position;
+			initialized = true;
+		}
+
 		Vector3 worldEndPoint = GetWorldEndPoint();
 
-		// Je�li jeste�my bli�ej startu, jedziemy do ko�ca. Jak bli�ej ko�ca, wracamy na start.
 		float distToStart = Vector3.Distance(transform.position, startPoint);
 		float distToEnd = Vector3.Distance(transform.position, worldEndPoint);
 
