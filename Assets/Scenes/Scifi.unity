@@ -567,8 +567,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NextLevelManager
   victoryCanvas: {fileID: 1010469676}
-  victoryText: {fileID: 1010469678}
   ratingText: {fileID: 1010469677}
+  nameText: {fileID: 0}
+  reviewText: {fileID: 0}
+  positiveImage: {fileID: 0}
+  negativeImage: {fileID: 0}
   nextLevelButton: {fileID: 1010469682}
   restartButton: {fileID: 1010469680}
   continueButton: {fileID: 1010469679}
@@ -852,17 +855,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!114 &1010469678 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2177615776454231777, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
-  m_PrefabInstance: {fileID: 1010469675}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &1010469679 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 432659749250643501, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
@@ -990,6 +982,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   checkpoint: {fileID: 0}
+  levelMusic: 
 --- !u!4 &1088707920
 Transform:
   m_ObjectHideFlags: 0
