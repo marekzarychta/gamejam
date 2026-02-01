@@ -110,9 +110,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a82739e1c570674fb7d62d49490042f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlitchedObject
-  startingComponents: 0000000001000000030000000200000007000000
+  startingComponents: 00000000010000000200000008000000
   finalState: 
   isImportant: 0
+  glitchLoopSound: {fileID: 0}
+  glitchVolume: 0.5
+  soundDistance: 10
+  pitchRange: {x: 0.8, y: 1.2}
   myCollider: {fileID: 4818067248749602868}
   myRigidbody: {fileID: 7289442660537363404}
   myRenderer: {fileID: 1668927418474144012}
@@ -122,6 +126,7 @@ MonoBehaviour:
   myEnlarge: {fileID: 1857451303118478765}
   myShrink: {fileID: 1997867379987235177}
   nakedMaterial: {fileID: 2100000, guid: 8e074b7088aed5d4c9148f97443c06b1, type: 2}
+  myTurretShooter: {fileID: 0}
 --- !u!65 &4818067248749602868
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -234,6 +239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shrink
   scaleFactor: 0.5
+  duration: 0.5
 --- !u!114 &6728622312200696627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,3 +253,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rotatable
   rotateFactor: 2.5
+  useGlobalUp: 1

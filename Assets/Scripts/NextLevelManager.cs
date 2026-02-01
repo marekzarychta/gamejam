@@ -25,6 +25,13 @@ public class NextLevelManager : MonoBehaviour
     // Progi zaliczenia (0.5 = 50%)
     private const float PASS_THRESHOLD = 0.5f;
 
+    void Start()
+    {
+        nextLevelButton.onClick.AddListener(NextLevel);
+        restartButton.onClick.AddListener(RestartLevel);
+        continueButton.onClick.AddListener(ContinueLevel);
+    }
+    
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && shown)
