@@ -1,60 +1,66 @@
 using UnityEngine;
-using System.Collections;
 
 public class Enlarge : MonoBehaviour
 {
-	[Header("Settings")]
-	public float scaleFactor = 2.0f;
-	public float duration = 0.5f; 
+    public float scaleFactor = 2.0f;
+    private Collider myCollider;
 
-	private Vector3 originalScale; 
-	private Coroutine scalingCoroutine;
+    void Awake()
+    {
+        myCollider = GetComponent<Collider>();
+        if (myCollider == null)
+        {
+            // Fallback dla obiektów z³o¿onych (szuka w dzieciach)
+            myCollider = GetComponentInChildren<Collider>();
+        }
+    }
 
-	void OnEnable()
-	{
-		Vector3 startScale = transform.localScale;
+    void OnEnable()
+    {
+        if (myCollider != null)
+        {
+            ResizeAndReposition(scaleFactor);
+        }
+        else
+        {
+            // Fallback, jeœli nie ma collidera (stara metoda, ¿eby nie wywali³o b³êdu)
+            transform.localScale *= scaleFactor;
+        }
+    }
 
-		Vector3 targetScale = startScale * scaleFactor;
+    void OnDisable()
+    {
+        if (myCollider != null)
+        {
+            // Przywracamy skalê (mno¿ymy przez odwrotnoœæ, czyli 1/scaleFactor)
+            ResizeAndReposition(1f / scaleFactor);
+        }
+        else
+        {
+            transform.localScale /= scaleFactor;
+        }
+    }
 
-		float heightDifference = targetScale.y - startScale.y;
-		Vector3 startPos = transform.position;
-		Vector3 targetPos = startPos + (Vector3.up * (heightDifference / 2f));
+    void ResizeAndReposition(float factor)
+    {
+        // 1. Zapamiêtujemy, gdzie DOK£ADNIE w œwiecie jest spód obiektu przed zmian¹
+        float oldBottomY = myCollider.bounds.min.y;
 
+        // 2. Skalujemy obiekt
+        transform.localScale *= factor;
 
-		if (scalingCoroutine != null) StopCoroutine(scalingCoroutine);
-		scalingCoroutine = StartCoroutine(LerpScale(startScale, targetScale, startPos, targetPos));
-	}
+        // WA¯NE: Wymuszamy odœwie¿enie fizyki/transformacji. 
+        // Bez tego bounds.min.y w nastêpnej linijce mog³oby zwróciæ star¹ wartoœæ.
+        Physics.SyncTransforms();
 
-	void OnDisable()
-	{
+        // 3. Sprawdzamy, gdzie spód wyl¹dowa³ po skalowaniu (np. wbi³ siê pod ziemiê)
+        float newBottomY = myCollider.bounds.min.y;
 
-		if (scalingCoroutine != null) StopCoroutine(scalingCoroutine);
+        // 4. Obliczamy ró¿nicê
+        float difference = oldBottomY - newBottomY;
 
-		transform.localScale /= scaleFactor;
-
-	}
-
-	private IEnumerator LerpScale(Vector3 startS, Vector3 endS, Vector3 startP, Vector3 endP)
-	{
-		float time = 0;
-
-		while (time < duration)
-		{
-			// P³ynne przejœcie
-			time += Time.deltaTime;
-			float t = time / duration;
-
-			// Opcjonalnie: Dodaj wyg³adzanie (SmoothStep) dla ³adniejszego efektu
-			t = Mathf.SmoothStep(0, 1, t);
-
-			transform.localScale = Vector3.Lerp(startS, endS, t);
-			transform.position = Vector3.Lerp(startP, endP, t);
-
-			yield return null;
-		}
-
-		// Na koniec upewniamy siê, ¿e wartoœci s¹ idealne
-		transform.localScale = endS;
-		transform.position = endP;
-	}
+        // 5. Przesuwamy obiekt w górê/dó³ o tê ró¿nicê, 
+        // ¿eby nowy spód znalaz³ siê w miejscu starego spodu.
+        transform.position += Vector3.up * difference;
+    }
 }
