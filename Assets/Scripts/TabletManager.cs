@@ -112,9 +112,13 @@ public class TabletManager : MonoBehaviour
         // ---------------------------
         
         if (currentPlayer.playerInventory.Count == 0) 
+        {
             if(noComponentsMessage != null) noComponentsMessage.SetActive(true);
+        }
         else 
+        {
             if(noComponentsMessage != null) noComponentsMessage.SetActive(false);
+        }
     }
 
     // Zaktualizowana funkcja CreateRow przyjmująca 'count'

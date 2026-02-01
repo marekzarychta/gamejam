@@ -92,7 +92,7 @@ public class GlitchedObject : MonoBehaviour
 			_glitchAudioSource.minDistance = 1f;
 			_glitchAudioSource.maxDistance = soundDistance;
 			_glitchAudioSource.rolloffMode = AudioRolloffMode.Linear; // Liniowe wyciszanie wraz z dystansem
-			_glitchAudioSource.volume = glitchVolume;
+			_glitchAudioSource.volume = glitchVolume * 0.2f;
 			_glitchAudioSource.playOnAwake = false;
 			_glitchAudioSource.loop = false; // Sami obsługujemy pętlę, żeby zmieniać pitch
 		}

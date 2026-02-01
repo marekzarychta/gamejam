@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 	public static GameManager Instance;
 
 	public Checkpoint checkpoint;
+	public string levelMusic;
 	
 	private List<GlitchedObject> sceneObjects = new List<GlitchedObject>();
 
@@ -20,6 +21,8 @@ public class GameManager : MonoBehaviour
 		GlitchedObject[] foundObjects = FindObjectsOfType<GlitchedObject>();
 		sceneObjects.AddRange(foundObjects);
 
+		AudioManager.Instance.PlayMusic(levelMusic, true);
+		
 		Debug.Log($"Znaleziono {sceneObjects.Count} zglitchowanych obiekt�w.");
 	}
 
