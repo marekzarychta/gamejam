@@ -7,8 +7,11 @@ public class NextLevelManager : MonoBehaviour
 {
     [Header("UI References")]
     public Transform victoryCanvas;
-    public TMP_Text victoryText;
     public TMP_Text ratingText;
+    public TMP_Text nameText;
+    public TMP_Text reviewText;
+    public Image positiveImage;
+    public Image negativeImage;
     
     [Header("Buttons")]
     public Button nextLevelButton;
@@ -79,27 +82,43 @@ public class NextLevelManager : MonoBehaviour
         }
         
         // 1. USTAWIANIE VICTORY TEXT (Tytuł)
-        if (Mathf.Approximately(percent, 1f)) // 100%
+        if (Mathf.Approximately(percent, 1f))
         {
-            victoryText.text = "PERFECT!";
-            victoryText.color = new Color(0f, 1f, 1f); // Cyan
+            nameText.text = "Stinky Toe";
+            reviewText.text = "This should be the golden industry standard!!!";
         }
-        else if (percent >= 0.75f) // 75% - 99%
+        else if (percent >= 0.7f)
         {
-            victoryText.text = "GOOD JOB!";
-            victoryText.color = Color.green;
+            nameText.text = "Evil Vampire";
+            reviewText.text = "Can't believe it, so little bugs!";
         }
-        else if (percent >= 0.50f) // 50% - 74%
+        else if (percent >= 0.50f)
         {
-            victoryText.text = "SYSTEM STABLE";
-            victoryText.color = Color.yellow;
+            nameText.text = "XSlayerX";
+            reviewText.text = "It's pretty good, but undercooked";
         }
-        else // < 50% (Porażka)
+        else if (percent >= 0.2f)
         {
-            victoryText.text = "CRITICAL FAILURE";
-            victoryText.color = Color.red;
+            nameText.text = "Tickle Berry";
+            reviewText.text = "They really didn't care about this game";
+        }
+        else
+        {
+            nameText.text = "Paris Hilton xxx";
+            reviewText.text = "WHO TF PLAYTESTED THIS ####??";
         }
 
+        if (percent >= 0.5f)
+        {
+            positiveImage.gameObject.SetActive(true);
+            negativeImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            positiveImage.gameObject.SetActive(false);
+            negativeImage.gameObject.SetActive(true);
+        }
+        
         // 2. USTAWIANIE RATING TEXT (Steam Style)
         string steamDesc = GetSteamRatingDescription(percent);
         Color ratingColor = GetRatingColor(percent);
