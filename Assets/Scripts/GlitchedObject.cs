@@ -244,20 +244,31 @@ public class GlitchedObject : MonoBehaviour
 
 	public float checkFixedState()
 	{
-		if (finalState.Count == 0) return 1f;
+		List<GlitchComponentType> tasksToComplete = new List<GlitchComponentType>();
 
-		int matches = 0;
-		foreach (var requiredComponent in finalState)
+		foreach (var req in finalState)
 		{
-			if (originalState.Contains(requiredComponent)) continue;
-			
-			if (activeComponents.Contains(requiredComponent))
+			// Jeśli komponent nie znajdował się na liście startowej, to znaczy, że trzeba go zdobyć.
+			if (!startingComponents.Contains(req))
 			{
-				matches++;
+				tasksToComplete.Add(req);
 			}
 		}
 
-		return (float)matches / finalState.Count;
+		// Zabezpieczenie: Jeśli nie ma nic do naprawienia (obiekt od początku spełniał wymogi), to 100%
+		if (tasksToComplete.Count == 0) return 1f;
+
+		int completedTasks = 0;
+		foreach (var task in tasksToComplete)
+		{
+			// Czy obiekt ma teraz ten wymagany komponent?
+			if (activeComponents.Contains(task))
+			{
+				completedTasks++;
+			}
+		}
+
+		return (float)completedTasks / tasksToComplete.Count;
 	}
     
 	public void SetHoverOutline(bool show)
