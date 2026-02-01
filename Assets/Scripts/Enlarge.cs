@@ -1,66 +1,125 @@
 using UnityEngine;
+using System.Collections;
 
+[DisallowMultipleComponent]
 public class Enlarge : MonoBehaviour
 {
-    public float scaleFactor = 2.0f;
-    private Collider myCollider;
+    [Header("Settings")]
+    [Min(0.01f)] public float scaleFactor = 2.0f;
+    [Min(0.01f)] public float duration = 0.5f;
 
-    void Awake()
+    [Header("Anchor")]
+    public bool keepBottomOnGround = true;
+
+    [SerializeField] private Collider anchorCollider;
+    [SerializeField] private Renderer anchorRenderer;
+
+    private ScaleTweenHost _host;
+    private Coroutine _tween;
+
+    private Vector3 _baseScale;
+    private bool _hasBaseScale;
+
+    private void Reset()
     {
-        myCollider = GetComponent<Collider>();
-        if (myCollider == null)
+        anchorCollider = GetComponent<Collider>();
+        if (anchorCollider == null) anchorCollider = GetComponentInChildren<Collider>();
+        anchorRenderer = GetComponentInChildren<Renderer>();
+    }
+
+    private void Awake()
+    {
+        if (anchorCollider == null)
         {
-            // Fallback dla obiektów z³o¿onych (szuka w dzieciach)
-            myCollider = GetComponentInChildren<Collider>();
+            anchorCollider = GetComponent<Collider>();
+            if (anchorCollider == null) anchorCollider = GetComponentInChildren<Collider>();
+        }
+        if (anchorRenderer == null) anchorRenderer = GetComponentInChildren<Renderer>();
+
+        _host = GetComponent<ScaleTweenHost>();
+        if (_host == null) _host = gameObject.AddComponent<ScaleTweenHost>();
+    }
+
+    private void OnEnable()
+    {
+        StopTween();
+
+        if (!_hasBaseScale || IsClose(transform.localScale, _baseScale))
+        {
+            _baseScale = transform.localScale;
+            _hasBaseScale = true;
+        }
+
+        Vector3 targetScale = _baseScale * scaleFactor;
+        _tween = _host.StartCoroutine(TweenScale(transform.localScale, targetScale, clearBaseOnComplete: false));
+    }
+
+    private void OnDisable()
+    {
+        if (_host == null) return;
+
+        StopTween();
+
+        if (!_hasBaseScale)
+        {
+            _baseScale = transform.localScale;
+            _hasBaseScale = true;
+        }
+
+        _tween = _host.StartCoroutine(TweenScale(transform.localScale, _baseScale, clearBaseOnComplete: true));
+    }
+
+    private void StopTween()
+    {
+        if (_host != null && _tween != null)
+        {
+            _host.StopCoroutine(_tween);
+            _tween = null;
         }
     }
 
-    void OnEnable()
+    private IEnumerator TweenScale(Vector3 startScale, Vector3 endScale, bool clearBaseOnComplete)
     {
-        if (myCollider != null)
+        float bottomTarget = keepBottomOnGround ? GetBottomY() : 0f;
+
+        float time = 0f;
+        while (time < duration)
         {
-            ResizeAndReposition(scaleFactor);
+            time += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(time / duration));
+
+            transform.localScale = Vector3.Lerp(startScale, endScale, t);
+
+            if (anchorCollider != null) Physics.SyncTransforms();
+
+            if (keepBottomOnGround)
+            {
+                float bottomNow = GetBottomY();
+                transform.position += Vector3.up * (bottomTarget - bottomNow);
+            }
+
+            yield return null;
         }
-        else
+
+        transform.localScale = endScale;
+        if (anchorCollider != null) Physics.SyncTransforms();
+
+        if (keepBottomOnGround)
         {
-            // Fallback, jeœli nie ma collidera (stara metoda, ¿eby nie wywali³o b³êdu)
-            transform.localScale *= scaleFactor;
+            float bottomNow = GetBottomY();
+            transform.position += Vector3.up * (bottomTarget - bottomNow);
         }
+
+        _tween = null;
+        if (clearBaseOnComplete) _hasBaseScale = false;
     }
 
-    void OnDisable()
+    private float GetBottomY()
     {
-        if (myCollider != null)
-        {
-            // Przywracamy skalê (mno¿ymy przez odwrotnoœæ, czyli 1/scaleFactor)
-            ResizeAndReposition(1f / scaleFactor);
-        }
-        else
-        {
-            transform.localScale /= scaleFactor;
-        }
+        if (anchorCollider != null) return anchorCollider.bounds.min.y;
+        if (anchorRenderer != null) return anchorRenderer.bounds.min.y;
+        return transform.position.y;
     }
 
-    void ResizeAndReposition(float factor)
-    {
-        // 1. Zapamiêtujemy, gdzie DOK£ADNIE w œwiecie jest spód obiektu przed zmian¹
-        float oldBottomY = myCollider.bounds.min.y;
-
-        // 2. Skalujemy obiekt
-        transform.localScale *= factor;
-
-        // WA¯NE: Wymuszamy odœwie¿enie fizyki/transformacji. 
-        // Bez tego bounds.min.y w nastêpnej linijce mog³oby zwróciæ star¹ wartoœæ.
-        Physics.SyncTransforms();
-
-        // 3. Sprawdzamy, gdzie spód wyl¹dowa³ po skalowaniu (np. wbi³ siê pod ziemiê)
-        float newBottomY = myCollider.bounds.min.y;
-
-        // 4. Obliczamy ró¿nicê
-        float difference = oldBottomY - newBottomY;
-
-        // 5. Przesuwamy obiekt w górê/dó³ o tê ró¿nicê, 
-        // ¿eby nowy spód znalaz³ siê w miejscu starego spodu.
-        transform.position += Vector3.up * difference;
-    }
+    private static bool IsClose(Vector3 a, Vector3 b) => (a - b).sqrMagnitude < 1e-6f;
 }
