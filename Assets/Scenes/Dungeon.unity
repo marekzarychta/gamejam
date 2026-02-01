@@ -3666,6 +3666,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base Variant 1 (1)
@@ -4611,11 +4619,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 5
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: 'startingComponents.Array.data[1]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: 'startingComponents.Array.data[2]'
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
       propertyPath: 'startingComponents.Array.data[3]'
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
       propertyPath: 'startingComponents.Array.data[4]'
@@ -5723,6 +5739,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[3]'
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base Variant 1 (4)
@@ -8221,6 +8245,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base (3)
@@ -8975,11 +9007,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 4
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: 'startingComponents.Array.data[1]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: 'startingComponents.Array.data[2]'
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
       propertyPath: 'startingComponents.Array.data[3]'
-      value: 8
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11826,15 +11870,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
-      propertyPath: 'startingComponents.Array.data[2]'
+      propertyPath: 'startingComponents.Array.data[1]'
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
-      propertyPath: 'startingComponents.Array.data[3]'
+      propertyPath: 'startingComponents.Array.data[2]'
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
+      propertyPath: 'startingComponents.Array.data[3]'
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[4]'
@@ -12274,7 +12322,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[1]'
@@ -14275,7 +14323,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[1]'
@@ -14287,11 +14335,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[3]'
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[4]'
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7824683327715369986, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: m_LocalScale.x
@@ -14385,7 +14433,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[1]'
@@ -14397,7 +14445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[3]'
-      value: 1
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[4]'
@@ -15349,7 +15397,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[2]'
@@ -15361,7 +15409,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[4]'
-      value: 8
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7824683327715369986, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: m_LocalScale.x
@@ -15432,6 +15480,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[1]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[2]'
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[3]'
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base Variant 1 (10)
@@ -18646,6 +18710,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base Variant 1 (7)
@@ -18746,6 +18818,18 @@ PrefabInstance:
     - target: {fileID: 1929620060453078862, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: 'startingComponents.Array.data[3]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19284,6 +19368,14 @@ PrefabInstance:
     - target: {fileID: 1929620060453078862, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: 'startingComponents.Array.data[3]'
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -25846,7 +25938,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[2]'
@@ -25858,7 +25950,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[4]'
-      value: 8
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7824683327715369986, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: m_LocalScale.x
@@ -29717,6 +29809,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base (1)
@@ -31066,7 +31166,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[1]'
@@ -31078,11 +31178,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[3]'
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[4]'
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7824683327715369986, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: m_LocalScale.x
@@ -31245,7 +31345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[1]'
@@ -32003,6 +32103,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base Variant 1 (6)
@@ -32775,6 +32883,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base Variant 1 (8)
@@ -33078,7 +33194,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[2]'
@@ -33090,7 +33206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[4]'
-      value: 8
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7824683327715369986, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: m_LocalScale.x
@@ -33316,7 +33432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[1]'
@@ -33738,6 +33854,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[1]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[2]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[3]'
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base Variant 1 (9)
@@ -33866,7 +34002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[1]'
@@ -37787,7 +37923,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[1]'
@@ -37799,11 +37935,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[3]'
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[4]'
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7824683327715369986, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: m_LocalScale.x
@@ -39148,7 +39284,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5692387171052706288, guid: afc7083b999236c42b49e18e6370931e, type: 3}
       propertyPath: 'startingComponents.Array.data[1]'
@@ -39451,6 +39587,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[1]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[2]'
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base Variant 1 (2)
@@ -39706,6 +39854,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[3]'
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base Variant 1 (3)
@@ -39841,6 +40001,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base Variant 1
@@ -40739,11 +40907,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
       propertyPath: startingComponents.Array.size
-      value: 4
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: 'startingComponents.Array.data[1]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: 'startingComponents.Array.data[2]'
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
       propertyPath: 'startingComponents.Array.data[3]'
-      value: 8
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084435866661239484, guid: e30ba32c3915d3e408977dfeaa5cc6cb, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40820,6 +41000,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: startingComponents.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019567330724107799, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
+      propertyPath: 'startingComponents.Array.data[4]'
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7273603363667100326, guid: 621e3e15e8a9c6f4bb9be682c0bfd690, type: 3}
       propertyPath: m_Name
       value: GlitchedObject base
