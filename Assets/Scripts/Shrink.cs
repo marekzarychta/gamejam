@@ -1,61 +1,134 @@
 using UnityEngine;
 using System.Collections;
 
+[DisallowMultipleComponent]
 public class Shrink : MonoBehaviour
 {
-	[Header("Settings")]
-	public float scaleFactor = 0.5f;
-	public float duration = 0.5f;
+    [Header("Settings")]
+    [Min(0.01f)] public float scaleFactor = 0.5f;
+    [Min(0.01f)] public float duration = 0.5f;
 
-	private Coroutine scalingCoroutine;
+    [Header("Anchor")]
+    public bool keepBottomOnGround = true;
 
-	void OnEnable()
-	{
-		Vector3 startScale = transform.localScale;
-		Vector3 startPos = transform.position;
+    [Tooltip("Najlepiej: collider, który faktycznie dotyka ziemi.")]
+    [SerializeField] private Collider anchorCollider;
 
-		Vector3 targetScale = startScale * scaleFactor;
+    [Tooltip("Fallback: renderer.")]
+    [SerializeField] private Renderer anchorRenderer;
 
-		float heightDifference = startScale.y - targetScale.y;
+    private ScaleTweenHost _host;
+    private Coroutine _tween;
 
-		Vector3 targetPos = startPos - (Vector3.up * (heightDifference / 2f));
+    private Vector3 _baseScale;
+    private bool _hasBaseScale;
 
-		if (scalingCoroutine != null) StopCoroutine(scalingCoroutine);
-		scalingCoroutine = StartCoroutine(LerpScale(startScale, targetScale, startPos, targetPos));
-	}
+    private void Reset()
+    {
+        anchorCollider = GetComponent<Collider>();
+        if (anchorCollider == null) anchorCollider = GetComponentInChildren<Collider>();
+        anchorRenderer = GetComponentInChildren<Renderer>();
+    }
 
-	void OnDisable()
-	{
-		if (scalingCoroutine != null) StopCoroutine(scalingCoroutine);
+    private void Awake()
+    {
+        if (anchorCollider == null)
+        {
+            anchorCollider = GetComponent<Collider>();
+            if (anchorCollider == null) anchorCollider = GetComponentInChildren<Collider>();
+        }
+        if (anchorRenderer == null) anchorRenderer = GetComponentInChildren<Renderer>();
 
-		Vector3 currentScale = transform.localScale;
+     
+        _host = GetComponent<ScaleTweenHost>();
+        if (_host == null) _host = gameObject.AddComponent<ScaleTweenHost>();
+    }
 
-		Vector3 targetScale = currentScale / scaleFactor;
+    private void OnEnable()
+    {
+        StopTween();
 
-		float heightDifference = targetScale.y - currentScale.y;
+       
+        if (!_hasBaseScale || IsClose(transform.localScale, _baseScale))
+        {
+            _baseScale = transform.localScale;
+            _hasBaseScale = true;
+        }
 
-		transform.localScale = targetScale;
+        Vector3 targetScale = _baseScale * scaleFactor;
+        _tween = _host.StartCoroutine(TweenScale(transform.localScale, targetScale, clearBaseOnComplete: false));
+    }
 
-		transform.position += Vector3.up * (heightDifference / 2f);
-	}
+    private void OnDisable()
+    {
+        if (_host == null) return;
 
-	private IEnumerator LerpScale(Vector3 startS, Vector3 endS, Vector3 startP, Vector3 endP)
-	{
-		float time = 0;
+        StopTween();
 
-		while (time < duration)
-		{
-			time += Time.deltaTime;
-			float t = time / duration;
-			t = Mathf.SmoothStep(0, 1, t);
+        if (!_hasBaseScale)
+        {
+            _baseScale = transform.localScale;
+            _hasBaseScale = true;
+        }
 
-			transform.localScale = Vector3.Lerp(startS, endS, t);
-			transform.position = Vector3.Lerp(startP, endP, t);
+      
+        _tween = _host.StartCoroutine(TweenScale(transform.localScale, _baseScale, clearBaseOnComplete: true));
+    }
 
-			yield return null;
-		}
+    private void StopTween()
+    {
+        if (_host != null && _tween != null)
+        {
+            _host.StopCoroutine(_tween);
+            _tween = null;
+        }
+    }
 
-		transform.localScale = endS;
-		transform.position = endP;
-	}
+    private IEnumerator TweenScale(Vector3 startScale, Vector3 endScale, bool clearBaseOnComplete)
+    {
+        float bottomTarget = keepBottomOnGround ? GetBottomY() : 0f;
+
+        float time = 0f;
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(time / duration));
+
+            transform.localScale = Vector3.Lerp(startScale, endScale, t);
+
+            if (anchorCollider != null) Physics.SyncTransforms();
+
+            if (keepBottomOnGround)
+            {
+                float bottomNow = GetBottomY();
+                transform.position += Vector3.up * (bottomTarget - bottomNow);
+            }
+
+            yield return null;
+        }
+
+        transform.localScale = endScale;
+        if (anchorCollider != null) Physics.SyncTransforms();
+
+        if (keepBottomOnGround)
+        {
+            float bottomNow = GetBottomY();
+            transform.position += Vector3.up * (bottomTarget - bottomNow);
+        }
+
+        _tween = null;
+        if (clearBaseOnComplete) _hasBaseScale = false;
+    }
+
+    private float GetBottomY()
+    {
+        if (anchorCollider != null) return anchorCollider.bounds.min.y;
+        if (anchorRenderer != null) return anchorRenderer.bounds.min.y;
+        return transform.position.y;
+    }
+
+    private static bool IsClose(Vector3 a, Vector3 b) => (a - b).sqrMagnitude < 1e-6f;
 }
+
+
+public class ScaleTweenHost : MonoBehaviour { }
