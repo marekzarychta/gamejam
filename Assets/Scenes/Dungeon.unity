@@ -5137,7 +5137,15 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8347606938152501959, guid: 1cb91722565fc0f47a385f9c05662125, type: 3}
+      propertyPath: horizontal
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8347606938152501959, guid: 1cb91722565fc0f47a385f9c05662125, type: 3}
       propertyPath: endPointVertical.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8347606938152501959, guid: 1cb91722565fc0f47a385f9c05662125, type: 3}
+      propertyPath: endPointHorizontal.y
       value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
