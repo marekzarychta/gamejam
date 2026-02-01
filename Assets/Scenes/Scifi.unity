@@ -1501,7 +1501,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 3, y: 3, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &623456789
 MonoBehaviour:
@@ -1517,10 +1517,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NextLevelManager
   victoryCanvas: {fileID: 1010469676}
   ratingText: {fileID: 1010469677}
-  nameText: {fileID: 0}
-  reviewText: {fileID: 0}
-  positiveImage: {fileID: 0}
-  negativeImage: {fileID: 0}
+  nameText: {fileID: 1010469685}
+  reviewText: {fileID: 1010469684}
+  positiveImage: {fileID: 1010469683}
+  negativeImage: {fileID: 1010469678}
   nextLevelButton: {fileID: 1010469682}
   restartButton: {fileID: 1010469680}
   continueButton: {fileID: 1010469679}
@@ -1535,13 +1535,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 623456787}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.32, y: -0.51, z: -1.45}
+  m_LocalRotation: {x: -0, y: 0.92126584, z: -0, w: 0.3889335}
+  m_LocalPosition: {x: 48.56, y: 14.012, z: -18.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 134.224, z: 0}
 --- !u!1 &659283305
 GameObject:
   m_ObjectHideFlags: 0
@@ -1579,7 +1579,8 @@ MonoBehaviour:
   musicVolume: 0.4
   sfxVolume: 1
   startMusic: 
-  musicClips: []
+  musicClips:
+  - {fileID: 8300000, guid: 418277ed9ed04c446abf2e8de81cdeb4, type: 3}
   sfxClips: []
 --- !u!4 &659283307
 Transform:
@@ -2114,6 +2115,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1010469678 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7088275318423169812, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
+  m_PrefabInstance: {fileID: 1010469675}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!114 &1010469679 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 432659749250643501, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
@@ -2158,6 +2170,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &1010469683 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4782988646020561378, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
+  m_PrefabInstance: {fileID: 1010469675}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!114 &1010469684 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7746246193855158933, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
+  m_PrefabInstance: {fileID: 1010469675}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1010469685 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1907216665548852799, guid: 4ecb1587b34ac434a9ab4def93d65561, type: 3}
+  m_PrefabInstance: {fileID: 1010469675}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1023413558
 GameObject:
   m_ObjectHideFlags: 0
@@ -2301,7 +2346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   checkpoint: {fileID: 0}
-  levelMusic: 
+  levelMusic: cosmos
 --- !u!4 &1088707920
 Transform:
   m_ObjectHideFlags: 0
