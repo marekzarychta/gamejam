@@ -60,13 +60,28 @@ public class Enlarge : MonoBehaviour
 
         StopTween();
 
+        // Upewniamy się, że mamy zapisaną bazową skalę
         if (!_hasBaseScale)
         {
             _baseScale = transform.localScale;
             _hasBaseScale = true;
         }
 
-        _tween = _host.StartCoroutine(TweenScale(transform.localScale, _baseScale, clearBaseOnComplete: true));
+        // --- POPRAWKA ---
+        // Sprawdzamy, czy GameObject jest w ogóle włączony.
+        if (gameObject.activeInHierarchy)
+        {
+            // Obiekt jest aktywny (tylko komponent został wyłączony), więc animujemy zmniejszanie
+            _tween = _host.StartCoroutine(TweenScale(transform.localScale, _baseScale, clearBaseOnComplete: true));
+        }
+        else
+        {
+            // Obiekt został całkowicie wyłączony (SetActive false).
+            // Nie możemy uruchomić Coroutine, więc przywracamy skalę natychmiastowo ("na sztywno").
+            transform.localScale = _baseScale;
+            _hasBaseScale = false;
+        }
+        // ----------------
     }
 
     private void StopTween()
