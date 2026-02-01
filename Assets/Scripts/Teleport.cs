@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Teleport : MonoBehaviour
 {
+    public AudioClip deathSound;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,6 +18,10 @@ public class Teleport : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player")) GameManager.Instance.Respawn();
+        if (other.gameObject.CompareTag("Player"))
+        {
+            GameManager.Instance.Respawn();
+            if (deathSound) AudioManager.Instance.PlaySfx(deathSound, 0.2f);
+        }
     }
 }

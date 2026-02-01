@@ -47,6 +47,7 @@ public class GlitchedObject : MonoBehaviour
 
 	private Stack<Material> materialHistory = new Stack<Material>();
 	
+	public List<GlitchComponentType> originalState = new List<GlitchComponentType>();
 	private MaterialPropertyBlock _propBlock;
     private int hoverPropertyID;
 	
@@ -108,6 +109,11 @@ public class GlitchedObject : MonoBehaviour
         
 		// Na start wyłączamy obrys
 		myOutline.enabled = false;
+
+		foreach (var comp in startingComponents)
+		{
+			originalState.Add(comp);
+		}
 		
 		UpdatePhysicalState();
 		UpdateHighlightState(); // Inicjalizacja podświetlenia
@@ -243,6 +249,8 @@ public class GlitchedObject : MonoBehaviour
 		int matches = 0;
 		foreach (var requiredComponent in finalState)
 		{
+			if (originalState.Contains(requiredComponent)) continue;
+			
 			if (activeComponents.Contains(requiredComponent))
 			{
 				matches++;

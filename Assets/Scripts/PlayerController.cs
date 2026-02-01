@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public Tablet tabletMovement;
     public Transform cursorCanvas;
     public Transform interactionTooltip;
+    public Transform dragTooltip;
 
     [Header("Audio")]
     public AudioClip tabletOpenSound;
@@ -60,7 +61,6 @@ public class PlayerController : MonoBehaviour
         {
             newTarget = hit.collider.GetComponent<GlitchedObject>();
             if (newTarget == null) newTarget = hit.collider.transform.parent.GetComponent<GlitchedObject>();
-
         }
 
 
@@ -91,10 +91,15 @@ public class PlayerController : MonoBehaviour
         if (newTarget != null)
         {
             if (interactionTooltip != null) interactionTooltip.gameObject.SetActive(true);
+            
+            var draggable = newTarget.GetComponent<Pushable>();
+            if (draggable != null && draggable.enabled) dragTooltip.gameObject.SetActive(true);
+            else dragTooltip.gameObject.SetActive(false);
         }
         else
         {
             if (interactionTooltip != null) interactionTooltip.gameObject.SetActive(false);
+            dragTooltip.gameObject.SetActive(false);
         }
     }
 
