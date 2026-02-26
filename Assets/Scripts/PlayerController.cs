@@ -33,17 +33,23 @@ public class PlayerController : MonoBehaviour
         tabletManager.InitializePlayerInventory(this);
     }
 
-    void Update()
+void Update()
     {
         HandleRaycast();
 
-        if (Input.GetKeyDown(KeyCode.E))
+        // 1. Klawisz E działa jako przełącznik (otwiera i zamyka)
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Tab))
         {
             ToggleTablet();
         }
+        // 2. Jeśli tablet jest OTWARTY (isCursorMode), pozwól zamknąć go dodatkowymi przyciskami
+        else if (isCursorMode && (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1)))
+        {
+            ToggleTablet();
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
             Debug.Log($"SPACE | isCursorMode={isCursorMode} | fppEnabled={(fppController ? fppController.enabled : false)}");
-
     }
 
     void HandleRaycast()
